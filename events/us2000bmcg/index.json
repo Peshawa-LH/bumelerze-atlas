@@ -1,0 +1,39 @@
+{
+  "event_key": "us2000bmcg",
+  "versions": [
+    {
+      "engine_version": {
+        "conditioning": "mvn (Engler et al. 2022), wave D DYFI-derived station observations",
+        "ems_model": "Zaniniandhofer19",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "0.1.0"
+      },
+      "products": {
+        "contours": "events/us2000bmcg/v4/cont_mi.json",
+        "metadata": "events/us2000bmcg/v4/info.json"
+      },
+      "published_at": "2026-08-17T23:29:02.754121+00:00",
+      "review_status": "automatic",
+      "version": 4
+    },
+    {
+      "engine_version": {
+        "conditioning": "mvn (Engler et al. 2022), wave D DYFI-derived station observations",
+        "ems_model": "Zaniniandhofer19",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "0.1.0"
+      },
+      "products": {
+        "contours": "events/us2000bmcg/v5/cont_mi.json",
+        "metadata": "events/us2000bmcg/v5/info.json"
+      },
+      "published_at": "2026-08-17T23:47:54.894992+00:00",
+      "review_status": "automatic",
+      "version": 5
+    }
+  ]
+}

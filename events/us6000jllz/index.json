@@ -1,0 +1,22 @@
+{
+  "event_key": "us6000jllz",
+  "versions": [
+    {
+      "engine_version": {
+        "conditioning": "mvn (Engler et al. 2022), wave D DYFI-derived station observations",
+        "ems_model": "Zaniniandhofer19",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "0.1.0"
+      },
+      "products": {
+        "contours": "events/us6000jllz/v4/cont_mi.json",
+        "metadata": "events/us6000jllz/v4/info.json"
+      },
+      "published_at": "2026-08-17T23:48:10.965781+00:00",
+      "review_status": "automatic",
+      "version": 4
+    }
+  ]
+}

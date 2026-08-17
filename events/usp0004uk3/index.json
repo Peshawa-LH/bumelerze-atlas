@@ -1,0 +1,21 @@
+{
+  "event_key": "usp0004uk3",
+  "versions": [
+    {
+      "engine_version": {
+        "ems_model": "Zaniniandhofer19",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "0.1.0"
+      },
+      "products": {
+        "contours": "events/usp0004uk3/v3/cont_mi.json",
+        "metadata": "events/usp0004uk3/v3/info.json"
+      },
+      "published_at": "2026-08-17T23:47:50.656371+00:00",
+      "review_status": "automatic",
+      "version": 3
+    }
+  ]
+}
