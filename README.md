@@ -11,9 +11,10 @@ and is consumed by the Bumelerze app at <https://bumelerze.com>.
 
 | Path | Contents |
 | --- | --- |
-| `events/<bumelerze-id>/<version>/` | One product version for one earthquake |
-| `events/<bumelerze-id>/latest.json` | Pointer to the current version for that event |
-| `index.json` | Machine-readable catalogue of every published product |
+| `index.json` | Catalogue of every event, with its latest version |
+| `events/<event-key>/index.json` | Every published version of that event, with full provenance |
+| `events/<event-key>/v<N>/cont_mi.json` | Intensity contours, GeoJSON, the primary artifact |
+| `events/<event-key>/v<N>/info.json` | Product metadata for that version |
 
 Products are **vector first**. The primary artifacts are GeoJSON contours and
 JSON metadata, so the app draws them as live map layers rather than as flat
