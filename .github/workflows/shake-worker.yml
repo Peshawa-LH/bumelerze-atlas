@@ -40,6 +40,10 @@ permissions:
 jobs:
   sweep:
     runs-on: ubuntu-latest
+    env:
+      # Promoted from secrets so step-level `if:` can test it;
+      # the secrets context is not available in step conditions.
+      VS30_RASTER_URL: ${{ secrets.VS30_RASTER_URL }}
     timeout-minutes: 20
     steps:
       # --- Fail loudly, first, before any network/compute work, if the
@@ -177,7 +181,7 @@ jobs:
       # BOTH the artifact layer and the fast queryable-index layer, not
       # just one of them.
       - name: Restore cached Vs30 raster (only if VS30_RASTER_URL is configured)
-        if: ${{ secrets.VS30_RASTER_URL != '' }}
+        if: ${{ env.VS30_RASTER_URL != '' }}
         id: vs30-cache
         uses: actions/cache@v4
         with:
@@ -185,13 +189,13 @@ jobs:
           key: vs30-raster-v1
 
       - name: Fetch the Vs30 raster from durable storage
-        if: ${{ secrets.VS30_RASTER_URL != '' && steps.vs30-cache.outputs.cache-hit != 'true' }}
+        if: ${{ env.VS30_RASTER_URL != '' && steps.vs30-cache.outputs.cache-hit != 'true' }}
         run: |
           mkdir -p vs30-cache
-          curl -fSL "${{ secrets.VS30_RASTER_URL }}" -o vs30-cache/global_vs30.grd
+          curl -fSL "$VS30_RASTER_URL" -o vs30-cache/global_vs30.grd
 
       - name: Point the engine at the cached raster
-        if: ${{ secrets.VS30_RASTER_URL != '' }}
+        if: ${{ env.VS30_RASTER_URL != '' }}
         run: echo "BUMELERZE_VS30_RASTER_PATH=$PWD/vs30-cache/global_vs30.grd" >> "$GITHUB_ENV"
 
       # --- The sweep itself: one full cycle across USGS (all_hour poll +
