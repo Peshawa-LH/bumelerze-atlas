@@ -96,40 +96,42 @@ jobs:
           cache: "pip"
           cache-dependency-path: bumelerze-v26/shake-service/requirements.txt
 
-      # --- openquake.engine's GDAL Python bindings must match a SYSTEM
-      # libgdal (README.md "One system dependency" -- it is a thin SWIG
-      # wrapper compiled against whatever libgdal-dev is installed, not a
-      # self-contained wheel). requirements.txt pins GDAL==3.13.2 to match
-      # Peshawa's own Homebrew install; a GitHub-hosted Ubuntu runner's apt
-      # repos will not generally carry that exact version. This is the one
-      # line in the lockfile this workflow deliberately diverges from --
-      # apt installs whatever GDAL Ubuntu currently ships, and the Python
-      # binding is pinned to match THAT, not the lockfile's number. Every
-      # other package installs at its exact pinned version.
-      - name: Install system GDAL
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libgdal-dev gdal-bin
-          echo "GDAL_VERSION=$(gdal-config --version)" >> "$GITHUB_ENV"
+      # --- openquake.engine hard-pins `gdal~=3.13.1` on Linux, while the
+      # runner's apt repositories carry 3.8.x. The Python binding is a thin
+      # wrapper compiled against the system library, so the two versions
+      # must match exactly and no combination of apt packages satisfies the
+      # pin. conda-forge ships prebuilt binaries for the required version,
+      # which is the usual answer for this dependency in CI.
+      #
+      # Worth recording: this service's own code never imports GDAL. It
+      # arrives purely as a declared dependency of openquake, and the
+      # worker path would run without it. We satisfy it properly rather
+      # than bypassing the resolver, so the installed environment matches
+      # what the engine expects.
+      - name: Set up the conda-forge toolchain with GDAL
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: shake
+          create-args: >-
+            python=3.11
+            gdal=3.13.1
+          cache-environment: true
+          init-shell: bash
 
       - name: Install shake-service Python dependencies
         working-directory: bumelerze-v26/shake-service
+        shell: bash -el {0}
         run: |
           python -m pip install --upgrade pip
-          # GDAL must be installed FIRST, pinned to the system libgdal.
-          # openquake.engine depends on GDAL, so installing requirements
-          # first makes pip resolve GDAL to its newest release, which then
-          # fails to build against the older libgdal apt ships. Installing
-          # the matching version up front leaves that dependency already
-          # satisfied. A constraints file keeps the later resolve from
-          # quietly upgrading it again.
-          pip install "GDAL==${GDAL_VERSION}"
-          echo "GDAL==${GDAL_VERSION}" > /tmp/constraints-ci.txt
+          # GDAL already comes from conda-forge above, so keep pip from
+          # trying to rebuild it from source against the wrong library.
           grep -v '^GDAL==' requirements.txt > /tmp/requirements-ci.txt
-          time pip install -c /tmp/constraints-ci.txt -r /tmp/requirements-ci.txt
+          time pip install -r /tmp/requirements-ci.txt
+          python -c "from osgeo import gdal; print('gdal', gdal.__version__)"
 
       - name: Verify the openquake install (README.md's own gate check)
         working-directory: bumelerze-v26/shake-service
+        shell: bash -el {0}
         run: |
           python -c "
           from openquake.hazardlib.contexts import ContextMaker
@@ -239,6 +241,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
           BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+        shell: bash -el {0}
         run: |
           mkdir -p regional-catalog
           python scripts/run_worker.py --once --require-supabase
@@ -269,6 +272,7 @@ jobs:
       # `actions/checkout`'s first step (this repo) owns.
       - name: Commit and push newly published products
         if: always()
+        shell: bash -el {0}
         run: |
           git config user.name "Bumelerze"
           git config user.email "dev@bumelerze.com"
