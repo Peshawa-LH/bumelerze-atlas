@@ -89,7 +89,6 @@ jobs:
           # default it would otherwise inherit.
           token: ${{ github.token }}
           persist-credentials: false
-          token: ""
 
       - uses: actions/setup-python@v5
         with:
