@@ -83,6 +83,11 @@ jobs:
         with:
           repository: Peshawa-LH/bumelerze-v26
           path: bumelerze-v26
+          # The built-in token authenticates the read. Without it the action
+          # errors with "Input required and not supplied: token" even for a
+          # public repository, because persist-credentials: false removes the
+          # default it would otherwise inherit.
+          token: ${{ github.token }}
           persist-credentials: false
           token: ""
 
