@@ -1,0 +1,21 @@
+{
+  "event_key": "bml2026001c",
+  "versions": [
+    {
+      "engine_version": {
+        "ems_model": "Zaniniandhofer19",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "0.1.0"
+      },
+      "products": {
+        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026001c/v1/cont_mi.json",
+        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026001c/v1/info.json"
+      },
+      "published_at": "2026-08-21T12:57:35.957428+00:00",
+      "review_status": "automatic",
+      "version": 1
+    }
+  ]
+}
