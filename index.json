@@ -51,6 +51,11 @@
       "latest_version": 1
     },
     {
+      "event_key": "bml2026001v",
+      "index_path": "events/bml2026001v/index.json",
+      "latest_version": 1
+    },
+    {
       "event_key": "iscgem839648",
       "index_path": "events/iscgem839648/index.json",
       "latest_version": 3
@@ -106,5 +111,5 @@
       "latest_version": 3
     }
   ],
-  "generated_at": "2026-08-22T09:32:39.796081+00:00"
+  "generated_at": "2026-08-22T16:31:27.051207+00:00"
 }
