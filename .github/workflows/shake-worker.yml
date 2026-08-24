@@ -4,7 +4,7 @@
 # publishes the vector artifacts into this repository, and indexes them in
 # Supabase. This is the periodic catch-up lane, not the rapid-response one:
 # GitHub delays scheduled runs under load, so urgent response belongs to a
-# dedicated always-on host. See the app repository's shake-service docs.
+# dedicated always-on host. See OPERATIONS.md in the engine repository.
 #
 # Publishing needs no configured credential: a workflow running here gets a
 # token scoped to write to this repository. Supabase indexing needs the two
@@ -31,9 +31,8 @@ concurrency:
 # `contents: write` is scoped to the repo THIS workflow lives in (the Atlas
 # repo) -- it is what lets the final `git push` step below use the
 # automatic GITHUB_TOKEN instead of a configured secret. It grants nothing
-# on `bumelerze-v26` (the app repo), which this workflow only ever reads
-# from, anonymously, as a public repo -- see the safety note above the
-# commit step.
+# on `bumelerze-engine`, which this workflow only ever reads from, via a
+# read-only deploy key -- see the safety note above the commit step.
 permissions:
   contents: write
 
@@ -58,8 +57,9 @@ jobs:
           missing=()
           [ -z "${{ secrets.SUPABASE_URL }}" ] && missing+=("SUPABASE_URL")
           [ -z "${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" ] && missing+=("SUPABASE_SERVICE_ROLE_KEY")
+          [ -z "${{ secrets.ENGINE_DEPLOY_KEY }}" ] && missing+=("ENGINE_DEPLOY_KEY")
           if [ ${#missing[@]} -ne 0 ]; then
-            echo "::error::Missing required secret(s) on this (bumelerze-atlas) repository: ${missing[*]}. Refusing to run in a silent local-only mode -- create them under Settings -> Secrets and variables -> Actions. See shake-service/OPERATIONS.md ('Scheduled lane') in Peshawa-LH/bumelerze-v26 for what each one is."
+            echo "::error::Missing required secret(s) on this (bumelerze-atlas) repository: ${missing[*]}. Refusing to run in a silent local-only mode -- create them under Settings -> Secrets and variables -> Actions. See OPERATIONS.md ('Scheduled lane') in Peshawa-LH/bumelerze-engine for what each one is."
             exit 1
           fi
 
@@ -73,28 +73,28 @@ jobs:
         with:
           persist-credentials: true
 
-      # --- The app repo, read-only, for shake-service/ itself. Public repo
-      # -> no token needed; `persist-credentials: false` + `token: ''` is
-      # belt-and-braces so this checkout can never accidentally be used to
-      # push anything back to bumelerze-v26 (task safety requirement: this
-      # workflow must never touch the app repository).
-      - name: Checkout bumelerze-v26 (public, read-only) for shake-service/
+      # --- The engine repo, read-only. Since the 2026-08-24 repo split the
+      # engine lives in Peshawa-LH/bumelerze-engine, which is PRIVATE, so
+      # the built-in GITHUB_TOKEN cannot read it (that token is scoped to
+      # the repository the workflow lives in). Authentication is a
+      # read-only deploy key registered on the engine repo, held here as
+      # the ENGINE_DEPLOY_KEY secret. `persist-credentials: false` keeps
+      # that key out of the checkout's git config so no later step can
+      # reuse it, and the key is read-only anyway, so this workflow cannot
+      # write to the engine repository even by accident.
+      - name: Checkout bumelerze-engine (private, read-only)
         uses: actions/checkout@v4
         with:
-          repository: Peshawa-LH/bumelerze-v26
-          path: bumelerze-v26
-          # The built-in token authenticates the read. Without it the action
-          # errors with "Input required and not supplied: token" even for a
-          # public repository, because persist-credentials: false removes the
-          # default it would otherwise inherit.
-          token: ${{ github.token }}
+          repository: Peshawa-LH/bumelerze-engine
+          path: bumelerze-engine
+          ssh-key: ${{ secrets.ENGINE_DEPLOY_KEY }}
           persist-credentials: false
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
-          cache-dependency-path: bumelerze-v26/shake-service/requirements.txt
+          cache-dependency-path: bumelerze-engine/requirements.txt
 
       # --- openquake.engine hard-pins `gdal~=3.13.1` on Linux, while the
       # runner's apt repositories carry 3.8.x. The Python binding is a thin
@@ -118,8 +118,8 @@ jobs:
           cache-environment: true
           init-shell: bash
 
-      - name: Install shake-service Python dependencies
-        working-directory: bumelerze-v26/shake-service
+      - name: Install engine Python dependencies
+        working-directory: bumelerze-engine
         shell: bash -el {0}
         run: |
           python -m pip install --upgrade pip
@@ -130,7 +130,7 @@ jobs:
           python -c "from osgeo import gdal; print('gdal', gdal.__version__)"
 
       - name: Verify the openquake install (README.md's own gate check)
-        working-directory: bumelerze-v26/shake-service
+        working-directory: bumelerze-engine
         shell: bash -el {0}
         run: |
           python -c "
@@ -165,13 +165,13 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            bumelerze-v26/shake-service/worker_state.json
-            bumelerze-v26/shake-service/regional-catalog/live-catalog.jsonl
+            bumelerze-engine/worker_state.json
+            bumelerze-engine/regional-catalog/live-catalog.jsonl
           key: shake-worker-state-${{ github.run_id }}
           restore-keys: |
             shake-worker-state-
 
-      # --- THE VS30 DECISION (see shake-service/OPERATIONS.md's own
+      # --- THE VS30 DECISION (see the engine repo's OPERATIONS.md's own
       # "Scheduled lane -> Vs30" section for the full writeup; summary
       # here). The engine's real Vs30 site-amplification raster is a
       # ~610 MB file that lives only on Peshawa's machine today
@@ -235,7 +235,7 @@ jobs:
       # separate clone, a separate token) -- see OPERATIONS.md for both
       # paths side by side.
       - name: Run one worker sweep, publishing straight into this checkout
-        working-directory: bumelerze-v26/shake-service
+        working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -256,19 +256,19 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: |
-            bumelerze-v26/shake-service/worker_state.json
-            bumelerze-v26/shake-service/regional-catalog/live-catalog.jsonl
+            bumelerze-engine/worker_state.json
+            bumelerze-engine/regional-catalog/live-catalog.jsonl
           key: shake-worker-state-${{ github.run_id }}
 
       # --- Commit and push, scoped ONLY to what AtlasRepoPublisher
       # actually writes (events/, index.json) -- never `git add -A` at the
-      # workspace root, which would also see the nested bumelerze-v26/
+      # workspace root, which would also see the nested bumelerze-engine/
       # checkout and the vs30-cache/ scratch directory. Idempotent no-op
       # guard: a sweep with nothing new to publish (the common case --
       # most cycles see no qualifying event) commits nothing, matching
       # scripts/publish_atlas.sh's own "additive only, no-op when
-      # unchanged" behavior. This step NEVER touches bumelerze-v26 (the app
-      # repo checkout) -- it operates entirely on the workspace root, which
+      # unchanged" behavior. This step NEVER touches bumelerze-engine (the
+      # engine checkout) -- it operates entirely on the workspace root, which
       # `actions/checkout`'s first step (this repo) owns.
       - name: Commit and push newly published products
         if: always()
