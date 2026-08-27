@@ -29,6 +29,10 @@ jobs:
         run: |
           mkdir -p _site
           cp -r events _site/events
+          # catalog/ holds the bulk event catalogs (Parquet). Without this
+          # they exist in the repository but are never served, so the app
+          # and anyone else can only get them by cloning.
+          cp -r catalog _site/catalog
           cp index.json README.md LICENSE _site/
       - uses: actions/upload-pages-artifact@v3
         with:

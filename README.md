@@ -15,6 +15,7 @@ and is consumed by the Bumelerze app at <https://bumelerze.com>.
 | `events/<event-key>/index.json` | Every published version of that event, with full provenance |
 | `events/<event-key>/v<N>/cont_mi.json` | Intensity contours, GeoJSON, the primary artifact |
 | `events/<event-key>/v<N>/info.json` | Product metadata for that version |
+| `catalog/global-m45.parquet` | Every earthquake worldwide at M ≥ 4.5, 1900 to now — see `catalog/README.md` |
 
 Products are **vector first**. The primary artifacts are GeoJSON contours and
 JSON metadata, so the app draws them as live map layers rather than as flat
