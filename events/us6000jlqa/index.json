@@ -39,6 +39,29 @@
       "published_at": "2026-09-01T21:32:33.665674+00:00",
       "review_status": "automatic",
       "version": 5
+    },
+    {
+      "engine_version": {
+        "conditioning": "mvn (Engler et al. 2022) on stations+dyfi with reverse-GMICE sigma (UQ-B, D46)",
+        "config_hash": "733656299bf5",
+        "ems_model": "Zaniniandhofer19",
+        "engine_chain": "mvn",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "0.1.0"
+      },
+      "products": {
+        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/us6000jlqa/v6/cont_mi.json",
+        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/us6000jlqa/v6/info.json",
+        "report": "https://peshawa-lh.github.io/bumelerze-atlas/events/us6000jlqa/v6/report.pdf",
+        "risk_contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/us6000jlqa/v6/cont_damage.json",
+        "risk_districts": "https://peshawa-lh.github.io/bumelerze-atlas/events/us6000jlqa/v6/districts.json",
+        "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/us6000jlqa/v6/risk_summary.json"
+      },
+      "published_at": "2026-09-01T22:26:28.355189+00:00",
+      "review_status": "automatic",
+      "version": 6
     }
   ]
 }
