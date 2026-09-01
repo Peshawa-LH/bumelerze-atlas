@@ -18,7 +18,16 @@ name: Shake-service scheduled worker
 on:
   schedule:
     - cron: "*/20 * * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      recompute_stale:
+        description: >-
+          After the poll, force a new version for up to this many tracked
+          events whose products were computed by an older engine (config
+          hash differs). 0 = normal sweep. Repeat until the log says
+          remaining=0. See OPERATIONS.md 8e in the engine repo.
+        required: false
+        default: "0"
 
 # Never run two sweeps at once against the same worker_state.json cache --
 # a genuine correctness requirement, not just tidiness: two concurrent
@@ -45,7 +54,8 @@ jobs:
       # Promoted from secrets so step-level `if:` can test it;
       # the secrets context is not available in step conditions.
       VS30_RASTER_URL: ${{ secrets.VS30_RASTER_URL }}
-    timeout-minutes: 20
+    # A dispatched batch recompute needs longer than the 20-minute sweep.
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 90 || 20 }}
     steps:
       # --- Fail loudly, first, before any network/compute work, if the
       # required secrets aren't configured on THIS (Atlas) repo. A
@@ -251,7 +261,8 @@ jobs:
         shell: bash -el {0}
         run: |
           mkdir -p regional-catalog
-          python scripts/run_worker.py --once --require-supabase
+          python scripts/run_worker.py --once --require-supabase \
+            --recompute-stale "${{ github.event.inputs.recompute_stale || '0' }}"
 
       # `if: always()` -- save whatever state this run produced even if the
       # sweep step above failed partway (run_worker.py's own `run_once` now
