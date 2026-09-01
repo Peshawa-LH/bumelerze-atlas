@@ -315,11 +315,11 @@ jobs:
                 :
               else
                 git checkout --theirs -- events index.json 2>/dev/null || true
-                python ../bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
+                python bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
                 git add -A events index.json
                 GIT_EDITOR=true git rebase --continue
               fi
-              python ../bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
+              python bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
               git add -A events index.json
               git diff --cached --quiet || git commit -q -m "Regenerate Atlas manifests (run ${{ github.run_id }})"
               if git push origin HEAD:main; then
