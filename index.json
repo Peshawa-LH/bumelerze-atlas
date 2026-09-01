@@ -83,32 +83,32 @@
     {
       "event_key": "iscgem839648",
       "index_path": "events/iscgem839648/index.json",
-      "latest_version": 3
+      "latest_version": 4
     },
     {
       "event_key": "iscgem884317",
       "index_path": "events/iscgem884317/index.json",
-      "latest_version": 3
+      "latest_version": 4
     },
     {
       "event_key": "iscgem898547",
       "index_path": "events/iscgem898547/index.json",
-      "latest_version": 3
+      "latest_version": 4
     },
     {
       "event_key": "iscgem899464",
       "index_path": "events/iscgem899464/index.json",
-      "latest_version": 3
+      "latest_version": 4
     },
     {
       "event_key": "us1000ghda",
       "index_path": "events/us1000ghda/index.json",
-      "latest_version": 3
+      "latest_version": 4
     },
     {
       "event_key": "us1000hwdw",
       "index_path": "events/us1000hwdw/index.json",
-      "latest_version": 3
+      "latest_version": 4
     },
     {
       "event_key": "us2000bmcg",
@@ -128,13 +128,13 @@
     {
       "event_key": "usp0001bb6",
       "index_path": "events/usp0001bb6/index.json",
-      "latest_version": 3
+      "latest_version": 4
     },
     {
       "event_key": "usp0004uk3",
       "index_path": "events/usp0004uk3/index.json",
-      "latest_version": 3
+      "latest_version": 4
     }
   ],
-  "generated_at": "2026-09-01T21:32:44.774925+00:00"
+  "generated_at": "2026-09-01T21:37:55.808243+00:00"
 }
