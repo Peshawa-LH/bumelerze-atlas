@@ -28,6 +28,12 @@ on:
           remaining=0. See OPERATIONS.md 8e in the engine repo.
         required: false
         default: "0"
+      force_events:
+        description: >-
+          Comma-separated tracked event ids to recompute and republish
+          regardless of their hash (e.g. after a lost push).
+        required: false
+        default: ""
 
 # Never run two sweeps at once against the same worker_state.json cache --
 # a genuine correctness requirement, not just tidiness: two concurrent
@@ -262,7 +268,8 @@ jobs:
         run: |
           mkdir -p regional-catalog
           python scripts/run_worker.py --once --require-supabase \
-            --recompute-stale "${{ github.event.inputs.recompute_stale || '0' }}"
+            --recompute-stale "${{ github.event.inputs.recompute_stale || '0' }}" \
+            --force-events "${{ github.event.inputs.force_events || '' }}"
 
       # `if: always()` -- save whatever state this run produced even if the
       # sweep step above failed partway (run_worker.py's own `run_once` now
@@ -299,5 +306,26 @@ jobs:
             echo "nothing new to publish this sweep"
           else
             git commit -m "Publish products from scheduled sweep (run ${{ github.run_id }})"
-            git push origin HEAD:main
+            # A human publish (seed_atlas.py) may have landed on main while
+            # this sweep ran. Rebase onto it; the manifests are regenerated
+            # from the union of event directories rather than merged.
+            for attempt in 1 2 3; do
+              git fetch origin main
+              if git rebase origin/main; then
+                :
+              else
+                git checkout --theirs -- events index.json 2>/dev/null || true
+                python ../bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
+                git add -A events index.json
+                GIT_EDITOR=true git rebase --continue
+              fi
+              python ../bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
+              git add -A events index.json
+              git diff --cached --quiet || git commit -q -m "Regenerate Atlas manifests (run ${{ github.run_id }})"
+              if git push origin HEAD:main; then
+                break
+              fi
+              echo "push attempt $attempt rejected, retrying"
+              sleep 10
+            done
           fi
