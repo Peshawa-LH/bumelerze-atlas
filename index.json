@@ -113,17 +113,17 @@
     {
       "event_key": "us2000bmcg",
       "index_path": "events/us2000bmcg/index.json",
-      "latest_version": 5
+      "latest_version": 6
     },
     {
       "event_key": "us6000jllz",
       "index_path": "events/us6000jllz/index.json",
-      "latest_version": 4
+      "latest_version": 5
     },
     {
       "event_key": "us6000jlqa",
       "index_path": "events/us6000jlqa/index.json",
-      "latest_version": 4
+      "latest_version": 5
     },
     {
       "event_key": "usp0001bb6",
@@ -136,5 +136,5 @@
       "latest_version": 3
     }
   ],
-  "generated_at": "2026-08-31T20:47:21.011859+00:00"
+  "generated_at": "2026-09-01T21:32:44.774925+00:00"
 }
