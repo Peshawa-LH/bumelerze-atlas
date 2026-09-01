@@ -8,8 +8,10 @@
 #
 # Publishing needs no configured credential: a workflow running here gets a
 # token scoped to write to this repository. Supabase indexing needs the two
-# repository secrets below. Setting VS30_RASTER_URL is optional and raises
-# computed products from the default rock site model to the full raster.
+# repository secrets below. VS30_RASTER_URL is optional and now rarely worth
+# setting: since 2026-09-01 the engine ships a regional Vs30 crop that every
+# runner gets from the checkout, so an unconfigured lane computes with real
+# site amplification rather than the rock default it used to fall back to.
 
 name: Shake-service scheduled worker
 
@@ -173,17 +175,22 @@ jobs:
 
       # --- THE VS30 DECISION (see the engine repo's OPERATIONS.md's own
       # "Scheduled lane -> Vs30" section for the full writeup; summary
-      # here). The engine's real Vs30 site-amplification raster is a
-      # ~610 MB file that lives only on Peshawa's machine today
-      # (shake_service/config.py's DEFAULT_VS30_RASTER_PATH, an absolute
-      # local path) -- a CI runner will never have it unless this lane
-      # fetches its own copy. Chosen approach: fetch-if-configured (option
-      # a), automatic honest fallback otherwise (option c) -- NEVER refuse
-      # to compute (option b would gut this lane's whole "catch-up /
-      # backfill" purpose, since most triggering events need a map, not
-      # zero maps). `VS30_RASTER_URL` is OPTIONAL: if it is not set, the
-      # steps below are skipped entirely and every product this run
-      # computes uses the engine's own already-built-in graceful fallback
+      # here). UPDATED 2026-09-01: the engine now ships a REGIONAL Vs30
+      # crop inside the package (`shake_service/data/vs30-regional.h5`,
+      # 5.5 MB, built by `scripts/build_regional_vs30.py` from the same
+      # 610 MB global backbone). It arrives with the engine checkout, so
+      # this lane gets real site amplification with nothing configured.
+      # That closes the gap this block used to describe: the global raster
+      # existed only on Peshawa's machine, so unless `VS30_RASTER_URL` was
+      # set, EVERY scheduled product was computed on uniform rock.
+      #
+      # `VS30_RASTER_URL` still works and still wins when set (it exports
+      # `BUMELERZE_VS30_RASTER_PATH`, which overrides the shipped default).
+      # It now buys only coverage OUTSIDE the regional crop's extent --
+      # everywhere this engine actually computes is already covered.
+      #
+      # The fallback chain below the raster is unchanged and still honest:
+      # a run that can read no raster at all uses
       # (`shake_service.vs30.default_sampler()`: rock-760 uniform site
       # conditions, LOUDLY logged) -- never silently downgraded, and never
       # indistinguishable from a full-quality product: every product's
