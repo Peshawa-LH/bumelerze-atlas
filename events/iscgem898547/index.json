@@ -10,10 +10,10 @@
         "service_version": "0.1.0"
       },
       "products": {
-        "contours": "events/iscgem898547/v3/cont_mi.json",
-        "metadata": "events/iscgem898547/v3/info.json"
+        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem898547/v3/cont_mi.json",
+        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem898547/v3/info.json"
       },
-      "published_at": "2026-08-17T23:47:38.636566+00:00",
+      "published_at": "2026-08-17T23:47:38.446446+00:00",
       "review_status": "automatic",
       "version": 3
     },
@@ -34,7 +34,7 @@
         "risk_districts": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem898547/v4/districts.json",
         "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem898547/v4/risk_summary.json"
       },
-      "published_at": "2026-09-01T21:36:01.153570+00:00",
+      "published_at": "2026-09-01T21:36:00.943757+00:00",
       "review_status": "automatic",
       "version": 4
     }

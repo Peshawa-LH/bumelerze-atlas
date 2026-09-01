@@ -13,7 +13,7 @@
         "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260011/v1/cont_mi.json",
         "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260011/v1/info.json"
       },
-      "published_at": "2026-08-20T22:01:37.513271+00:00",
+      "published_at": "2026-08-20T22:01:36.539147+00:00",
       "review_status": "automatic",
       "version": 1
     },
@@ -29,7 +29,7 @@
         "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260011/v2/cont_mi.json",
         "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260011/v2/info.json"
       },
-      "published_at": "2026-08-20T22:39:33.909781+00:00",
+      "published_at": "2026-08-20T22:39:33.138160+00:00",
       "review_status": "automatic",
       "version": 2
     }

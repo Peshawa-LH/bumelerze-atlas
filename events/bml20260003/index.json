@@ -13,7 +13,7 @@
         "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260003/v1/cont_mi.json",
         "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260003/v1/info.json"
       },
-      "published_at": "2026-08-24T23:32:56.586888+00:00",
+      "published_at": "2026-08-24T23:32:54.940612+00:00",
       "review_status": "automatic",
       "version": 1
     },
@@ -34,7 +34,7 @@
         "risk_districts": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260003/v4/districts.json",
         "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260003/v4/risk_summary.json"
       },
-      "published_at": "2026-09-01T21:49:21.260886+00:00",
+      "published_at": "2026-09-01T21:49:21.017169+00:00",
       "review_status": "automatic",
       "version": 4
     }
