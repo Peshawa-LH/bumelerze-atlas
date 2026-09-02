@@ -17,7 +17,16 @@ name: Shake-service scheduled worker
 
 on:
   schedule:
-    - cron: "*/20 * * * *"
+    # Every 5 minutes: GitHub's minimum for a cron, and the best a free
+    # hosted lane can do (Peshawa, 2026-09-02: no always-on host for now).
+    # Runs are queued, never overlapped (concurrency group below).
+    - cron: "*/5 * * * *"
+  # Event-driven trigger: Supabase's ingest cron posts a repository_dispatch
+  # the moment a new event lands in the region (migration 0029), so a map
+  # starts within about a minute of detection instead of waiting for the
+  # next cron slot.
+  repository_dispatch:
+    types: [event-detected]
   workflow_dispatch:
     inputs:
       recompute_stale:
