@@ -4,15 +4,7 @@
     {
       "engine_version": null,
       "products": {
-        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/cont_mi.json",
-        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/info.json",
-        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/grid.json",
-        "report": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/report.pdf",
-        "risk_areas": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/areas.json",
-        "risk_contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/cont_damage.json",
-        "risk_districts": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/districts.json",
-        "risk_grid": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/damage_grid.json",
-        "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/risk_summary.json"
+        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/info.json"
       },
       "published_at": null,
       "review_status": "automatic",
