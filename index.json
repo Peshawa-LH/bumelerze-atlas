@@ -3,66 +3,21 @@
     {
       "event_key": "bml20260001",
       "index_path": "events/bml20260001/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "bml20260003",
       "index_path": "events/bml20260003/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "bml20260006",
       "index_path": "events/bml20260006/index.json",
-      "latest_version": 5
-    },
-    {
-      "event_key": "bml2026000d",
-      "index_path": "events/bml2026000d/index.json",
       "latest_version": 1
-    },
-    {
-      "event_key": "bml2026000l",
-      "index_path": "events/bml2026000l/index.json",
-      "latest_version": 1
-    },
-    {
-      "event_key": "bml2026000o",
-      "index_path": "events/bml2026000o/index.json",
-      "latest_version": 1
-    },
-    {
-      "event_key": "bml2026000r",
-      "index_path": "events/bml2026000r/index.json",
-      "latest_version": 1
-    },
-    {
-      "event_key": "bml2026000w",
-      "index_path": "events/bml2026000w/index.json",
-      "latest_version": 1
-    },
-    {
-      "event_key": "bml2026000x",
-      "index_path": "events/bml2026000x/index.json",
-      "latest_version": 1
-    },
-    {
-      "event_key": "bml2026000z",
-      "index_path": "events/bml2026000z/index.json",
-      "latest_version": 1
-    },
-    {
-      "event_key": "bml20260011",
-      "index_path": "events/bml20260011/index.json",
-      "latest_version": 2
     },
     {
       "event_key": "bml20260016",
       "index_path": "events/bml20260016/index.json",
-      "latest_version": 5
-    },
-    {
-      "event_key": "bml2026001c",
-      "index_path": "events/bml2026001c/index.json",
       "latest_version": 1
     },
     {
@@ -76,16 +31,6 @@
       "latest_version": 1
     },
     {
-      "event_key": "bml2026001t",
-      "index_path": "events/bml2026001t/index.json",
-      "latest_version": 1
-    },
-    {
-      "event_key": "bml2026001v",
-      "index_path": "events/bml2026001v/index.json",
-      "latest_version": 1
-    },
-    {
       "event_key": "bml20260024",
       "index_path": "events/bml20260024/index.json",
       "latest_version": 1
@@ -93,11 +38,6 @@
     {
       "event_key": "bml20260029",
       "index_path": "events/bml20260029/index.json",
-      "latest_version": 1
-    },
-    {
-      "event_key": "bml2026002a",
-      "index_path": "events/bml2026002a/index.json",
       "latest_version": 1
     },
     {
@@ -118,58 +58,58 @@
     {
       "event_key": "iscgem839648",
       "index_path": "events/iscgem839648/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "iscgem884317",
       "index_path": "events/iscgem884317/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "iscgem898547",
       "index_path": "events/iscgem898547/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "iscgem899464",
       "index_path": "events/iscgem899464/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "us1000ghda",
       "index_path": "events/us1000ghda/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "us1000hwdw",
       "index_path": "events/us1000hwdw/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "us2000bmcg",
       "index_path": "events/us2000bmcg/index.json",
-      "latest_version": 8
+      "latest_version": 1
     },
     {
       "event_key": "us6000jllz",
       "index_path": "events/us6000jllz/index.json",
-      "latest_version": 7
+      "latest_version": 1
     },
     {
       "event_key": "us6000jlqa",
       "index_path": "events/us6000jlqa/index.json",
-      "latest_version": 7
+      "latest_version": 1
     },
     {
       "event_key": "usp0001bb6",
       "index_path": "events/usp0001bb6/index.json",
-      "latest_version": 5
+      "latest_version": 1
     },
     {
       "event_key": "usp0004uk3",
       "index_path": "events/usp0004uk3/index.json",
-      "latest_version": 5
+      "latest_version": 1
     }
   ],
-  "generated_at": "2026-09-17T01:45:38.954463+00:00"
+  "generated_at": "2026-09-18T21:51:34.294309+00:00"
 }
