@@ -43,6 +43,14 @@ on:
           regardless of their hash (e.g. after a lost push).
         required: false
         default: ""
+      v2_cut:
+        description: >-
+          Engine v2.0 cut (one-time, deliberate): type PURGE to delete every
+          published event and index row and republish everything with the
+          current engine under Bumelerze-id folders
+          (scripts/purge_and_republish.py). Anything else runs a normal sweep.
+        required: false
+        default: ""
 
 # Never run two sweeps at once against the same worker_state.json cache --
 # a genuine correctness requirement, not just tidiness: two concurrent
@@ -266,7 +274,22 @@ jobs:
       # still the right tool for Peshawa's own local/manual runs (a
       # separate clone, a separate token) -- see OPERATIONS.md for both
       # paths side by side.
+      - name: Engine v2.0 cut (only when v2_cut == PURGE)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.v2_cut == 'PURGE' }}
+        working-directory: bumelerze-engine
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
+          BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+        shell: bash -el {0}
+        run: |
+          mkdir -p regional-catalog
+          python scripts/purge_and_republish.py --atlas-root "${{ github.workspace }}" \
+            --state-path worker_state.json --require-supabase --yes
+
       - name: Run one worker sweep, publishing straight into this checkout
+        if: ${{ !(github.event_name == 'workflow_dispatch' && github.event.inputs.v2_cut == 'PURGE') }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
