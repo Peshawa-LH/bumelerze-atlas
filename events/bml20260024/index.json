@@ -13,7 +13,6 @@
         "service_version": "0.1.0"
       },
       "products": {
-        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260024/v1/cont_mi.json",
         "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260024/v1/info.json",
         "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20260024/v1/grid.json"
       },

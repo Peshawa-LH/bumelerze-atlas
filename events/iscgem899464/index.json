@@ -2,16 +2,7 @@
   "event_key": "iscgem899464",
   "versions": [
     {
-      "engine_version": {
-        "config_hash": "09a6a04fa72f",
-        "ems_model": "Zaniniandhofer19",
-        "engine": "forward",
-        "engine_chain": "gmpe_forward",
-        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
-        "mmi_model": "WordenEtAl12",
-        "openquake_pin": "openquake.engine==3.26.2",
-        "service_version": "0.1.0"
-      },
+      "engine_version": null,
       "products": {
         "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/cont_mi.json",
         "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/info.json",
@@ -23,7 +14,7 @@
         "risk_grid": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/damage_grid.json",
         "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/iscgem899464/v1/risk_summary.json"
       },
-      "published_at": "2026-09-18T21:03:50.802003+00:00",
+      "published_at": null,
       "review_status": "automatic",
       "version": 1
     }
