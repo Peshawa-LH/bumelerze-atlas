@@ -77,6 +77,10 @@ concurrency:
 # read-only deploy key -- see the safety note above the commit step.
 permissions:
   contents: write
+  # the sweep dispatches the Pages deploy itself: GitHub does not start
+  # workflows from pushes made with GITHUB_TOKEN, so published products
+  # would otherwise sit on main and never reach the CDN.
+  actions: write
 
 jobs:
   sweep:
@@ -344,6 +348,8 @@ jobs:
       - name: Commit and push newly published products
         if: always()
         shell: bash -el {0}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "Bumelerze"
           git config user.email "dev@bumelerze.com"
@@ -355,6 +361,7 @@ jobs:
             # A human publish (seed_atlas.py) may have landed on main while
             # this sweep ran. Rebase onto it; the manifests are regenerated
             # from the union of event directories rather than merged.
+            pushed=0
             for attempt in 1 2 3; do
               git fetch origin main
               if git rebase origin/main; then
@@ -387,9 +394,18 @@ jobs:
               git add -A events index.json
               git diff --cached --quiet || git commit -q -m "Regenerate Atlas manifests (run ${{ github.run_id }})"
               if git push origin HEAD:main; then
+                pushed=1
                 break
               fi
               echo "push attempt $attempt rejected, retrying"
               sleep 10
             done
+            if [ "$pushed" = "1" ]; then
+              # A push authored by GITHUB_TOKEN does not trigger the
+              # "Deploy Atlas to GitHub Pages" workflow (GitHub's own
+              # recursion guard), so the new products would stay off the
+              # CDN until someone pushed by hand. Ask for the deploy.
+              gh workflow run deploy-pages.yml --ref main \
+                || echo "::warning::could not dispatch the Pages deploy; run it by hand"
+            fi
           fi
