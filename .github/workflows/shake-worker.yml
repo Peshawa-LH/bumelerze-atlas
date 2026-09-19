@@ -43,6 +43,12 @@ on:
           regardless of their hash (e.g. after a lost push).
         required: false
         default: ""
+      cut_only:
+        description: >-
+          Comma-separated event ids the cut should limit itself to (used
+          with SEEDS to republish a few curated events). Empty means all.
+        required: false
+        default: ""
       v2_cut:
         description: >-
           Engine cut (one-time, deliberate). PURGE deletes every published
@@ -276,8 +282,8 @@ jobs:
       # still the right tool for Peshawa's own local/manual runs (a
       # separate clone, a separate token) -- see OPERATIONS.md for both
       # paths side by side.
-      - name: Engine cut (only when v2_cut is PURGE, RESTORE or PRUNE)
-        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE') }}
+      - name: Engine cut (only when v2_cut is PURGE, RESTORE, PRUNE or SEEDS)
+        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE' || github.event.inputs.v2_cut == 'SEEDS') }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -290,13 +296,14 @@ jobs:
           case "${{ github.event.inputs.v2_cut }}" in
             RESTORE) extra="--no-purge --skip-seeds --tracked-all" ;;
             PRUNE)   extra="--no-purge --prune-off-policy" ;;
+            SEEDS)   extra="--no-purge --only ${{ github.event.inputs.cut_only }}" ;;
             *)       extra="" ;;
           esac
           python scripts/purge_and_republish.py --atlas-root "${{ github.workspace }}" \
             --state-path worker_state.json --require-supabase --yes $extra
 
       - name: Run one worker sweep, publishing straight into this checkout
-        if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE')) }}
+        if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE' || github.event.inputs.v2_cut == 'SEEDS')) }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
