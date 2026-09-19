@@ -10,7 +10,7 @@
         "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
         "mmi_model": "WordenEtAl12",
         "openquake_pin": "openquake.engine==3.26.2",
-        "service_version": "2.0.0"
+        "service_version": "2.1.0"
       },
       "products": {
         "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19440001/v1/cont_mi.json",
@@ -23,7 +23,7 @@
         "risk_grid": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19440001/v1/damage_grid.json",
         "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19440001/v1/risk_summary.json"
       },
-      "published_at": "2026-09-18T22:16:32.987764+00:00",
+      "published_at": "2026-09-19T18:28:57.763398+00:00",
       "review_status": "automatic",
       "version": 1
     }
