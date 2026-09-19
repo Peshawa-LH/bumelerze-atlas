@@ -346,10 +346,28 @@ jobs:
               if git rebase origin/main; then
                 :
               else
-                git checkout --theirs -- events index.json 2>/dev/null || true
+                # Resolve every unmerged path in favour of this sweep's own
+                # products ("theirs" during a rebase is the commit being
+                # replayed). A path that cannot be resolved that way (added
+                # on one side only, deleted on the other) takes whichever
+                # side still exists. --theirs used to be run blind with
+                # "|| true", which left conflict markers in the tree for
+                # "git add -A" to stage and commit (four corrupted product
+                # files on 2026-09-19); the marker guard below makes that
+                # failure loud instead of silent.
+                while read -r path; do
+                  [ -n "$path" ] || continue
+                  git checkout --theirs -- "$path" 2>/dev/null \
+                    || git checkout --ours -- "$path" 2>/dev/null \
+                    || git rm -q -f -- "$path"
+                done < <(git diff --name-only --diff-filter=U)
                 python bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
                 git add -A events index.json
                 GIT_EDITOR=true git rebase --continue
+              fi
+              if grep -rlq "^<<<<<<< " events index.json 2>/dev/null; then
+                echo "::error::conflict markers survived the rebase in: $(grep -rl "^<<<<<<< " events index.json | tr "\n" " ")"
+                exit 1
               fi
               python bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
               git add -A events index.json
