@@ -45,10 +45,12 @@ on:
         default: ""
       v2_cut:
         description: >-
-          Engine v2.0 cut (one-time, deliberate): type PURGE to delete every
-          published event and index row and republish everything with the
-          current engine under Bumelerze-id folders
-          (scripts/purge_and_republish.py). Anything else runs a normal sweep.
+          Engine cut (one-time, deliberate). PURGE deletes every published
+          event and index row and republishes everything with the current
+          engine under Bumelerze-id folders. RESTORE republishes the tracked
+          events without purging anything, to recover from a cut that died
+          partway (scripts/purge_and_republish.py). Anything else runs a
+          normal sweep.
         required: false
         default: ""
 
@@ -274,8 +276,8 @@ jobs:
       # still the right tool for Peshawa's own local/manual runs (a
       # separate clone, a separate token) -- see OPERATIONS.md for both
       # paths side by side.
-      - name: Engine v2.0 cut (only when v2_cut == PURGE)
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.v2_cut == 'PURGE' }}
+      - name: Engine cut (only when v2_cut is PURGE or RESTORE)
+        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE') }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -285,11 +287,16 @@ jobs:
         shell: bash -el {0}
         run: |
           mkdir -p regional-catalog
+          if [ "${{ github.event.inputs.v2_cut }}" = "RESTORE" ]; then
+            extra="--no-purge --skip-seeds --tracked-all"
+          else
+            extra=""
+          fi
           python scripts/purge_and_republish.py --atlas-root "${{ github.workspace }}" \
-            --state-path worker_state.json --require-supabase --yes
+            --state-path worker_state.json --require-supabase --yes $extra
 
       - name: Run one worker sweep, publishing straight into this checkout
-        if: ${{ !(github.event_name == 'workflow_dispatch' && github.event.inputs.v2_cut == 'PURGE') }}
+        if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE')) }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
