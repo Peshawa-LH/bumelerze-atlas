@@ -276,8 +276,8 @@ jobs:
       # still the right tool for Peshawa's own local/manual runs (a
       # separate clone, a separate token) -- see OPERATIONS.md for both
       # paths side by side.
-      - name: Engine cut (only when v2_cut is PURGE or RESTORE)
-        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE') }}
+      - name: Engine cut (only when v2_cut is PURGE, RESTORE or PRUNE)
+        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE') }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -287,16 +287,16 @@ jobs:
         shell: bash -el {0}
         run: |
           mkdir -p regional-catalog
-          if [ "${{ github.event.inputs.v2_cut }}" = "RESTORE" ]; then
-            extra="--no-purge --skip-seeds --tracked-all"
-          else
-            extra=""
-          fi
+          case "${{ github.event.inputs.v2_cut }}" in
+            RESTORE) extra="--no-purge --skip-seeds --tracked-all" ;;
+            PRUNE)   extra="--no-purge --prune-off-policy" ;;
+            *)       extra="" ;;
+          esac
           python scripts/purge_and_republish.py --atlas-root "${{ github.workspace }}" \
             --state-path worker_state.json --require-supabase --yes $extra
 
       - name: Run one worker sweep, publishing straight into this checkout
-        if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE')) }}
+        if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE')) }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
