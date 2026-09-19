@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"value": 2.0, "units": "ems"}, "geometry": {"type": "MultiLineString", "coordinates": [[[38.5635, 38.26013539212946], [38.54231886414652, 38.2435], [38.5635, 38.22686460787053], [38.58468113585347, 38.2435], [38.5635, 38.26013539212946]]]}}]}

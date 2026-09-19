@@ -27,6 +27,33 @@
       "published_at": "2026-09-19T19:23:25.014583+00:00",
       "review_status": "automatic",
       "version": 1
+    },
+    {
+      "engine_version": {
+        "conditioning": "mvn (Engler et al. 2022) on dyfi with reverse-GMICE sigma (UQ-B, D46)",
+        "config_hash": "09a6a04fa72f",
+        "ems_model": "Zaniniandhofer19",
+        "engine": "conditioned",
+        "engine_chain": "mvn",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "2.1.0"
+      },
+      "products": {
+        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/cont_mi.json",
+        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/info.json",
+        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/grid.json",
+        "report": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/report.pdf",
+        "risk_areas": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/areas.json",
+        "risk_contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/cont_damage.json",
+        "risk_districts": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/districts.json",
+        "risk_grid": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/damage_grid.json",
+        "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml20170001/v2/risk_summary.json"
+      },
+      "published_at": "2026-09-19T20:24:43.612321+00:00",
+      "review_status": "automatic",
+      "version": 2
     }
   ]
 }
