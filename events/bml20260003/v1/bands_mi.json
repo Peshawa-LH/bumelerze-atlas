@@ -1,1 +1,1 @@
-{"type": "FeatureCollection", "features": []}
+{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"value": 2.0, "units": "ems", "min_area_cells": 2.0}, "geometry": {"type": "MultiPolygon", "coordinates": [[[[40.39114, 38.31149], [42.70986, 38.31149], [42.70986, 40.10811], [40.39114, 40.10811], [40.39114, 38.31149]]]]}}]}
