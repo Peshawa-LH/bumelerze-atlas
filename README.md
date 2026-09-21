@@ -52,13 +52,54 @@ Products are served over HTTPS from this repository and may be fetched
 directly. Please cite the Atlas if you use it in published work, and check each
 product's review status before relying on it.
 
-## License
+## License and attribution
 
-Data and products in this repository are licensed under
-[CC BY 4.0](LICENSE). Attribution: Bumelerze Atlas, Peshawa L. Hasan.
-Products are derived from earthquake parameters published by USGS, EMSC, and
-GEOFON, which carry their own terms; see
-[DATA-SOURCES.md](https://github.com/Peshawa-LH/bumelerze-v26/blob/main/DATA-SOURCES.md)
-in the main repository.
+The Atlas itself is licensed [CC BY 4.0](LICENSE): Bumelerze Atlas,
+Peshawa L. Hasan. Products are built from upstream data that carries its
+own terms, and those terms require attribution wherever these products are
+used or redistributed.
+
+**Hazard products** (`grid.json`, `cont_mi.json`, `bands_mi.json`,
+`info.json`) come from earthquake source parameters published by **USGS**,
+**EMSC** and **GEOFON**, from USGS finite-fault and observation products
+where published, and from a site-condition grid derived from the **USGS**
+global Vs30 slope proxy.
+
+**Risk products** (`damage_grid.json`, `cont_damage.json`,
+`bands_damage.json`, `districts.json`, `areas.json`, `risk_summary.json`,
+`report.pdf`) additionally derive from:
+
+| Source | Licence | Attribution required |
+| --- | --- | --- |
+| GFZ OpenBuildingMap building footprints | ODbL 1.0 (share-alike) | © OpenStreetMap contributors |
+| Microsoft Building Footprints | CDLA-Permissive-2.0 | Microsoft |
+| GHS-BUILT-S and GHS-SMOD, GHS Urban Centre Database | CC BY 4.0 | European Commission JRC |
+| WorldPop population, Iraq 2025 | CC BY 4.0 | WorldPop, University of Southampton |
+| OCHA COD-AB Iraq administrative boundaries | CC BY-IGO | OCHA FISS / ITOS; Iraq Central Statistics Office |
+| Iraq 2024 census tables | Iraqi government publication, terms not stated | Central Statistical Organisation; Kurdistan Region Statistics Office |
+| GEM Middle East exposure model | not confirmed | GEM Foundation |
+
+### One licensing question is open
+
+The building stock behind every risk product descends from
+OpenStreetMap through OpenBuildingMap, and **ODbL 1.0 is share-alike**. It
+distinguishes a *Derivative Database*, which must itself be offered under
+ODbL, from a *Produced Work* rendered from a database, which may be
+licensed freely provided the database and its licence are credited.
+
+Which of the two a given risk product is depends on the product, and this
+has not been settled:
+
+- `damage_grid.json` is per-cell and is the closest thing here to a
+  database of its own; the conservative reading treats it as a Derivative
+  Database.
+- The area aggregates (`areas.json`, `districts.json`,
+  `risk_summary.json`) and the contour and band geometries are statistics
+  and renderings, which read more naturally as Produced Works.
+
+Until the owner rules on it, the safe assumption for a reuser is that the
+risk products carry ODbL obligations, and the attribution above must
+travel with them either way. The hazard products are unaffected: nothing
+in them derives from OpenStreetMap.
 
 Contact: <hello@bumelerze.com>
