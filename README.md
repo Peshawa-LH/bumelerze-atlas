@@ -1,105 +1,77 @@
 # Bumelerze Atlas
 
-Computed ground-motion and risk products for earthquakes in Kurdistan and Iraq,
-published as open, versioned, citable data.
+Computed ground-motion and building-damage products for earthquakes in
+Kurdistan and Iraq. Open, versioned and citable.
 
-Every product here was produced by the Bumelerze SHAKEmap engine
-(`shake-service` in the [main repository](https://github.com/Peshawa-LH/bumelerze-v26))
-and is consumed by the Bumelerze app at <https://bumelerze.com>.
+Produced by the [Bumelerze engine](https://github.com/Peshawa-LH/bumelerze-engine)
+and consumed by the app at <https://bumelerze.com>.
 
-## What is in here
+## Layout
 
-| Path | Contents |
+```
+index.json                          every event, with its latest version
+events/<bml id>/index.json          every version of that event
+events/<bml id>/v<n>/               the products
+catalog/                            global earthquake catalogue, M >= 4.5
+```
+
+Event ids are Bumelerze ids (`bml` + year + counter). Provider ids are
+recorded inside each product as aliases, never as the key.
+
+## Products
+
+| File | What it is |
 | --- | --- |
-| `index.json` | Catalogue of every event, with its latest version |
-| `events/<event-key>/index.json` | Every published version of that event, with full provenance |
-| `events/<event-key>/v<N>/cont_mi.json` | Intensity contours, GeoJSON, the primary artifact |
-| `events/<event-key>/v<N>/info.json` | Product metadata for that version |
-| `catalog/global-m45.parquet` | Every earthquake worldwide at M ≥ 4.5, 1900 to now — see `catalog/README.md` |
+| `grid.json` | PGA, PGV, SA(0.3), SA(1.0), IMS-25 intensity, MMI, and their sigmas. **The authoritative field** |
+| `cont_mi.json` | Intensity contour lines |
+| `bands_mi.json` | Intensity as filled polygons, holes included |
+| `info.json` | The earthquake, the engine chain, the data used, versions, review status |
+| `damage_grid.json` | Per cell: expected damage grade, buildings at DG3+, exposed population |
+| `cont_damage.json`, `bands_damage.json` | The same line and fill pair for damage |
+| `areas.json` | Damage by governorate, district, sub-district and city |
+| `districts.json` | Governorate damage, the older single-level form |
+| `risk_summary.json` | National totals, settings, provenance |
+| `report.pdf` | Three-page report |
 
-Products are **vector first**. The primary artifacts are GeoJSON contours and
-JSON metadata, so the app draws them as live map layers rather than as flat
-images, and so anyone can query, restyle, or reanalyse them. Raster grids are
-published only where a gridded field is genuinely needed, and are never
-required to display a map.
+Risk products exist only where the exposure model does, which is Iraq.
+Events outside it are published shakemap-only, and say so.
 
-## Provenance and review status
+Every product records the engine version, the configuration hash, the
+parameter registry version and the fragility database version, so any
+number can be traced to the code and settings that produced it.
 
-Every product carries the configuration that produced it: engine version,
-ground-motion models and their weights, the intensity conversion used, the
-conditioning method, and which observational data were available (station
-records, felt reports, finite-fault rupture models).
+## Review status
 
-Products also carry a **review status**. Automatically computed products are
-published as provisional. A product marked as reviewed has been checked by a
-seismologist. Provisional products are published rather than hidden, because a
-map that states its own uncertainty is more useful than a missing one.
+Every version carries `review_status`: `automatic` for a product the
+engine published unattended, `reviewed` once a scientist has signed it
+off. Check it before relying on a number.
 
-Science is corrected over time. When the engine is fixed, affected products are
-recomputed and republished as a new version. Superseded versions remain in this
-repository's history, so the record of what was shown, and when, is preserved.
+## Licence and attribution
 
-## Identifiers
+The Atlas is [CC BY 4.0](LICENSE): Bumelerze Atlas, Peshawa L. Hasan.
 
-Events are keyed by Bumelerze event id (`bml` + origin year + a base-36
-counter, for example `bml2017000s`). Agency identifiers from USGS, EMSC, and
-GEOFON are recorded inside each product's metadata, so a product can always be
-traced back to the source catalogues.
+Products are built from upstream data whose licences require credit, and
+that credit travels with them: USGS, EMSC and GEOFON earthquake
+parameters; building footprints from GFZ OpenBuildingMap, derived from
+OpenStreetMap, © OpenStreetMap contributors, ODbL, and from Microsoft,
+CDLA-Permissive-2.0; JRC Global Human Settlement Layer and WorldPop, CC
+BY 4.0; OCHA COD-AB Iraq, CC BY-IGO; GEM Global Exposure Model; the
+IMS-25 vulnerability table. Full records, with licences and checksums,
+are in the engine repository.
 
-## Using the data
+**One question is unsettled.** The building stock descends from
+OpenStreetMap under ODbL, which is share-alike. ODbL separates a
+*Derivative Database*, which must itself be offered under ODbL, from a
+*Produced Work* rendered from one, which need not be. Which a given risk
+product is has not been ruled on: `damage_grid.json` is per-cell and
+reads as the former, while the area aggregates and the contour geometries
+read as the latter. Until it is settled, assume the risk products carry
+ODbL obligations. The hazard products are unaffected, since nothing in
+them derives from OpenStreetMap.
 
-Products are served over HTTPS from this repository and may be fetched
-directly. Please cite the Atlas if you use it in published work, and check each
-product's review status before relying on it.
+## Citing
 
-## License and attribution
+> Hasan P. L. (2026) Bumelerze SHAKEmap and damage report, event
+> `<bml id>`, version `<n>`.
 
-The Atlas itself is licensed [CC BY 4.0](LICENSE): Bumelerze Atlas,
-Peshawa L. Hasan. Products are built from upstream data that carries its
-own terms, and those terms require attribution wherever these products are
-used or redistributed.
-
-**Hazard products** (`grid.json`, `cont_mi.json`, `bands_mi.json`,
-`info.json`) come from earthquake source parameters published by **USGS**,
-**EMSC** and **GEOFON**, from USGS finite-fault and observation products
-where published, and from a site-condition grid derived from the **USGS**
-global Vs30 slope proxy.
-
-**Risk products** (`damage_grid.json`, `cont_damage.json`,
-`bands_damage.json`, `districts.json`, `areas.json`, `risk_summary.json`,
-`report.pdf`) additionally derive from:
-
-| Source | Licence | Attribution required |
-| --- | --- | --- |
-| GFZ OpenBuildingMap building footprints | ODbL 1.0 (share-alike) | © OpenStreetMap contributors |
-| Microsoft Building Footprints | CDLA-Permissive-2.0 | Microsoft |
-| GHS-BUILT-S and GHS-SMOD, GHS Urban Centre Database | CC BY 4.0 | European Commission JRC |
-| WorldPop population, Iraq 2025 | CC BY 4.0 | WorldPop, University of Southampton |
-| OCHA COD-AB Iraq administrative boundaries | CC BY-IGO | OCHA FISS / ITOS; Iraq Central Statistics Office |
-| Iraq 2024 census tables | Iraqi government publication, terms not stated | Central Statistical Organisation; Kurdistan Region Statistics Office |
-| GEM Middle East exposure model | not confirmed | GEM Foundation |
-
-### One licensing question is open
-
-The building stock behind every risk product descends from
-OpenStreetMap through OpenBuildingMap, and **ODbL 1.0 is share-alike**. It
-distinguishes a *Derivative Database*, which must itself be offered under
-ODbL, from a *Produced Work* rendered from a database, which may be
-licensed freely provided the database and its licence are credited.
-
-Which of the two a given risk product is depends on the product, and this
-has not been settled:
-
-- `damage_grid.json` is per-cell and is the closest thing here to a
-  database of its own; the conservative reading treats it as a Derivative
-  Database.
-- The area aggregates (`areas.json`, `districts.json`,
-  `risk_summary.json`) and the contour and band geometries are statistics
-  and renderings, which read more naturally as Produced Works.
-
-Until the owner rules on it, the safe assumption for a reuser is that the
-risk products carry ODbL obligations, and the attribution above must
-travel with them either way. The hazard products are unaffected: nothing
-in them derives from OpenStreetMap.
-
-Contact: <hello@bumelerze.com>
+Contact: <dev@bumelerze.com>
