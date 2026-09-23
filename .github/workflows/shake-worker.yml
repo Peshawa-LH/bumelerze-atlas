@@ -49,6 +49,15 @@ on:
           with SEEDS to republish a few curated events). Empty means all.
         required: false
         default: ""
+      populate_limit:
+        description: >-
+          Atlas population (v26.1.1 first run). Compute the next N events
+          of the population selection (last 183 days at M>=3 plus M>=6
+          since 1964) that have no products yet, then stop. 0 = normal
+          sweep. Repeat until the log says 0 remain. ~40 fits the 90-minute
+          dispatch cap. See scripts/populate_atlas.py in the engine repo.
+        required: false
+        default: "0"
       v2_cut:
         description: >-
           Engine cut (one-time, deliberate). PURGE deletes every published
@@ -306,8 +315,28 @@ jobs:
           python scripts/purge_and_republish.py --atlas-root "${{ github.workspace }}" \
             --state-path worker_state.json --require-supabase --yes $extra
 
+      # One batch of the Atlas population. Publishes under ids allocated by
+      # the database (pipeline.py's single allocator), NOT under the
+      # catalogue's own ids -- the catalogue numbers its rows independently
+      # and the two spaces diverge, so the run also writes id-crosswalk.json
+      # so a catalogue id still resolves to the published one.
+      - name: Populate the Atlas (only when populate_limit is set)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.populate_limit != '0' && github.event.inputs.populate_limit != '' }}
+        working-directory: bumelerze-engine
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
+          BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+        shell: bash -el {0}
+        run: |
+          python scripts/populate_atlas.py \
+            --atlas "${{ github.workspace }}" \
+            --state-path worker_state.json \
+            --limit "${{ github.event.inputs.populate_limit }}"
+
       - name: Run one worker sweep, publishing straight into this checkout
-        if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE' || github.event.inputs.v2_cut == 'SEEDS')) }}
+        if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE' || github.event.inputs.v2_cut == 'SEEDS' || github.event.inputs.populate_limit != '0')) }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -353,7 +382,7 @@ jobs:
         run: |
           git config user.name "Bumelerze"
           git config user.email "dev@bumelerze.com"
-          git add -A events index.json
+          git add -A events index.json id-crosswalk.json
           if git diff --cached --quiet; then
             echo "nothing new to publish this sweep"
           else
@@ -383,7 +412,7 @@ jobs:
                     || git rm -q -f -- "$path"
                 done < <(git diff --name-only --diff-filter=U)
                 python bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
-                git add -A events index.json
+                git add -A events index.json id-crosswalk.json
                 GIT_EDITOR=true git rebase --continue
               fi
               if grep -rlq "^<<<<<<< " events index.json 2>/dev/null; then
@@ -391,7 +420,7 @@ jobs:
                 exit 1
               fi
               python bumelerze-engine/scripts/regenerate_atlas_index.py "$PWD"
-              git add -A events index.json
+              git add -A events index.json id-crosswalk.json
               git diff --cached --quiet || git commit -q -m "Regenerate Atlas manifests (run ${{ github.run_id }})"
               if git push origin HEAD:main; then
                 pushed=1
