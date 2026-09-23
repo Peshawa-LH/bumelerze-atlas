@@ -16,8 +16,28 @@
       "latest_version": 1
     },
     {
+      "event_key": "bml19660001",
+      "index_path": "events/bml19660001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml19660002",
+      "index_path": "events/bml19660002/index.json",
+      "latest_version": 1
+    },
+    {
       "event_key": "bml19670001",
       "index_path": "events/bml19670001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml19710001",
+      "index_path": "events/bml19710001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml19750001",
+      "index_path": "events/bml19750001/index.json",
       "latest_version": 1
     },
     {
@@ -26,8 +46,23 @@
       "latest_version": 1
     },
     {
+      "event_key": "bml19780001",
+      "index_path": "events/bml19780001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml19780002",
+      "index_path": "events/bml19780002/index.json",
+      "latest_version": 1
+    },
+    {
       "event_key": "bml19800001",
       "index_path": "events/bml19800001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml19800002",
+      "index_path": "events/bml19800002/index.json",
       "latest_version": 1
     },
     {
@@ -41,8 +76,38 @@
       "latest_version": 1
     },
     {
+      "event_key": "bml20020001",
+      "index_path": "events/bml20020001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml20030001",
+      "index_path": "events/bml20030001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml20060001",
+      "index_path": "events/bml20060001/index.json",
+      "latest_version": 1
+    },
+    {
       "event_key": "bml20110001",
       "index_path": "events/bml20110001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml20120001",
+      "index_path": "events/bml20120001/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml20120002",
+      "index_path": "events/bml20120002/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml20140001",
+      "index_path": "events/bml20140001/index.json",
       "latest_version": 1
     },
     {
@@ -58,6 +123,11 @@
     {
       "event_key": "bml20180002",
       "index_path": "events/bml20180002/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml20200001",
+      "index_path": "events/bml20200001/index.json",
       "latest_version": 1
     },
     {
@@ -141,5 +211,5 @@
       "latest_version": 1
     }
   ],
-  "generated_at": "2026-09-23T08:24:25.138019+00:00"
+  "generated_at": "2026-09-23T09:53:58.215601+00:00"
 }
