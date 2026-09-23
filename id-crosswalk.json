@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "note": "Bumelerze ids for published products are allocated by the event database, which is the single allocator. The regional catalogue that seeded this run numbers its own rows independently, so the same earthquake can carry one id in the catalogue and another in the Atlas. The Atlas id is the published one: it names the event folder, the event page and the report citation. This file resolves a catalogue id to it.",
-  "generated": "2026-09-23T11:10:26+00:00",
+  "generated": "2026-09-23T11:24:51+00:00",
   "entries": [
     {
       "catalog_id": "bml1966001c",
@@ -214,6 +214,12 @@
       "source_id": "645658247"
     },
     {
+      "catalog_id": "bml202601t8",
+      "atlas_id": "bml202602ay",
+      "source": "ISC",
+      "source_id": "645764624"
+    },
+    {
       "catalog_id": "bml202601tw",
       "atlas_id": "bml202602a7",
       "source": "ISC",
@@ -224,6 +230,12 @@
       "atlas_id": "bml202602am",
       "source": "ISC",
       "source_id": "645776101"
+    },
+    {
+      "catalog_id": "bml202601vm",
+      "atlas_id": "bml202602ax",
+      "source": "ISC",
+      "source_id": "645782572"
     },
     {
       "catalog_id": "bml202601xi",
@@ -238,10 +250,22 @@
       "source_id": "645755270"
     },
     {
+      "catalog_id": "bml2026020x",
+      "atlas_id": "bml202602aw",
+      "source": "ISC",
+      "source_id": "646119919"
+    },
+    {
       "catalog_id": "bml2026023j",
       "atlas_id": "bml202602ad",
       "source": "ISC",
       "source_id": "645876133"
+    },
+    {
+      "catalog_id": "bml2026024g",
+      "atlas_id": "bml202602av",
+      "source": "ISC",
+      "source_id": "645878132"
     },
     {
       "catalog_id": "bml2026024l",
@@ -250,10 +274,28 @@
       "source_id": "645878196"
     },
     {
+      "catalog_id": "bml2026024m",
+      "atlas_id": "bml202602au",
+      "source": "ISC",
+      "source_id": "645878198"
+    },
+    {
+      "catalog_id": "bml2026024n",
+      "atlas_id": "bml202602at",
+      "source": "ISC",
+      "source_id": "645884058"
+    },
+    {
       "catalog_id": "bml2026024r",
       "atlas_id": "bml202602aj",
       "source": "ISC",
       "source_id": "645884894"
+    },
+    {
+      "catalog_id": "bml2026024s",
+      "atlas_id": "bml202602as",
+      "source": "ISC",
+      "source_id": "645884919"
     },
     {
       "catalog_id": "bml2026024t",
@@ -268,10 +310,34 @@
       "source_id": "645889035"
     },
     {
+      "catalog_id": "bml2026024x",
+      "atlas_id": "bml202602ar",
+      "source": "ISC",
+      "source_id": "646042832"
+    },
+    {
+      "catalog_id": "bml2026024z",
+      "atlas_id": "bml202602aq",
+      "source": "ISC",
+      "source_id": "646042961"
+    },
+    {
+      "catalog_id": "bml20260252",
+      "atlas_id": "bml202602ap",
+      "source": "ISC",
+      "source_id": "645996351"
+    },
+    {
       "catalog_id": "bml20260257",
       "atlas_id": "bml2026029z",
       "source": "ISC",
       "source_id": "646040948"
+    },
+    {
+      "catalog_id": "bml20260258",
+      "atlas_id": "bml202602ao",
+      "source": "ISC",
+      "source_id": "646062688"
     },
     {
       "catalog_id": "bml20260259",
@@ -314,6 +380,12 @@
       "atlas_id": "bml202602af",
       "source": "ISC",
       "source_id": "646139662"
+    },
+    {
+      "catalog_id": "bml2026025i",
+      "atlas_id": "bml202602an",
+      "source": "ISC",
+      "source_id": "646139667"
     },
     {
       "catalog_id": "bml2026025j",
