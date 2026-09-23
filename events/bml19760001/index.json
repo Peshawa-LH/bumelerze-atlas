@@ -1,0 +1,33 @@
+{
+  "event_key": "bml19760001",
+  "versions": [
+    {
+      "engine_version": {
+        "config_hash": "09a6a04fa72f",
+        "ems_model": "Zaniniandhofer19",
+        "engine": "forward",
+        "engine_chain": "gmpe_forward",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "26.1.1"
+      },
+      "products": {
+        "contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/bands_mi.json",
+        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/cont_mi.json",
+        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/info.json",
+        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/grid.json",
+        "report": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/report.pdf",
+        "risk_areas": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/areas.json",
+        "risk_contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/bands_damage.json",
+        "risk_contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/cont_damage.json",
+        "risk_districts": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/districts.json",
+        "risk_grid": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/damage_grid.json",
+        "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml19760001/v1/risk_summary.json"
+      },
+      "published_at": "2026-09-23T08:24:22.029345+00:00",
+      "review_status": "automatic",
+      "version": 1
+    }
+  ]
+}

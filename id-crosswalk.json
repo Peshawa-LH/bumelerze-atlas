@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "note": "Bumelerze ids for published products are allocated by the event database, which is the single allocator. The regional catalogue that seeded this run numbers its own rows independently, so the same earthquake can carry one id in the catalogue and another in the Atlas. The Atlas id is the published one: it names the event folder, the event page and the report citation. This file resolves a catalogue id to it.",
+  "generated": "2026-09-23T08:24:22+00:00",
+  "entries": [
+    {
+      "catalog_id": "bml19670004",
+      "atlas_id": "bml19670001",
+      "source": "ISCGEM",
+      "source_id": "839648"
+    },
+    {
+      "catalog_id": "bml1976001p",
+      "atlas_id": "706299",
+      "source": "ISCGEM",
+      "source_id": "706299"
+    },
+    {
+      "catalog_id": "bml19800027",
+      "atlas_id": "bml19800001",
+      "source": "ISCGEM",
+      "source_id": "634193"
+    },
+    {
+      "catalog_id": "bml1990000z",
+      "atlas_id": "366754",
+      "source": "ISCGEM",
+      "source_id": "366754"
+    },
+    {
+      "catalog_id": "bml201101ol",
+      "atlas_id": "17394270",
+      "source": "ISCGEM",
+      "source_id": "17394270"
+    },
+    {
+      "catalog_id": "bml2017000s",
+      "atlas_id": "bml20170001",
+      "source": "ISC",
+      "source_id": "617943542"
+    },
+    {
+      "catalog_id": "bml2018002s",
+      "atlas_id": "bml20180001",
+      "source": "ISC",
+      "source_id": "612638538"
+    },
+    {
+      "catalog_id": "bml2018003o",
+      "atlas_id": "bml20180002",
+      "source": "ISC",
+      "source_id": "614337169"
+    },
+    {
+      "catalog_id": "bml2026025v",
+      "atlas_id": "bml20260006",
+      "source": "ISC",
+      "source_id": "646209337"
+    }
+  ]
+}
