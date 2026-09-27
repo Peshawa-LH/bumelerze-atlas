@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "note": "Bumelerze ids for published products are allocated by the event database, which is the single allocator. The regional catalogue that seeded this run numbers its own rows independently, so the same earthquake can carry one id in the catalogue and another in the Atlas. The Atlas id is the published one: it names the event folder, the event page and the report citation. This file resolves a catalogue id to it.",
-  "generated": "2026-09-27T14:08:27+00:00",
+  "generated": "2026-09-27T16:10:09+00:00",
   "entries": [
     {
       "catalog_id": "bml1966001c",
@@ -634,7 +634,7 @@
     },
     {
       "catalog_id": "bml2026025k",
-      "atlas_id": "bml202600rz",
+      "atlas_id": "bml202602a6",
       "source": "ISC",
       "source_id": "646140894"
     },
