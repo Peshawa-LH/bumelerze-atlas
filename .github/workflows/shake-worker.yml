@@ -49,6 +49,13 @@ on:
           with SEEDS to republish a few curated events). Empty means all.
         required: false
         default: ""
+      populate_only:
+        description: >-
+          Comma-separated CATALOGUE Bumelerze ids to recompute even though
+          they are already published — for correcting a published event
+          whose parameters have changed. Needs populate_limit set too.
+        required: false
+        default: ""
       populate_limit:
         description: >-
           Atlas population (v26.1.1 first run). Compute the next N events
@@ -333,7 +340,8 @@ jobs:
           python scripts/populate_atlas.py \
             --atlas "${{ github.workspace }}" \
             --state-path worker_state.json \
-            --limit "${{ github.event.inputs.populate_limit }}"
+            --limit "${{ github.event.inputs.populate_limit }}" \
+            --only "${{ github.event.inputs.populate_only }}"
 
       - name: Run one worker sweep, publishing straight into this checkout
         if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE' || github.event.inputs.v2_cut == 'SEEDS' || github.event.inputs.populate_limit != '0')) }}
