@@ -1,1 +1,1 @@
-{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"value": 2.0, "units": "ems"}, "geometry": {"type": "MultiLineString", "coordinates": [[[42.5485, 38.73734], [42.52718, 38.7207], [42.5485, 38.70406], [42.56982, 38.7207], [42.5485, 38.73734]]]}}]}
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"value":2.0,"units":"ems"},"geometry":{"type":"MultiLineString","coordinates":[[[42.5485,38.73734],[42.52718,38.7207],[42.5485,38.70406],[42.56982,38.7207],[42.5485,38.73734]]]}}],"epicenter":{"lat":38.7207,"lon":42.5485}}
