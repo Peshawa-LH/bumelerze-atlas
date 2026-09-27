@@ -56,6 +56,15 @@ on:
           whose parameters have changed. Needs populate_limit set too.
         required: false
         default: ""
+      registry_catchup:
+        description: >-
+          Registry catch-up: compute up to this many SHAKEmaps for published
+          registry events inside the trigger criteria that have none (the
+          feeds can miss an event entirely between two scheduled runs).
+          Every scheduled sweep already does 3; set higher to drain a
+          backlog in one dispatch. 0 disables the leg for this run.
+        required: false
+        default: "3"
       populate_limit:
         description: >-
           Atlas population (v26.1.1 first run). Compute the next N events
@@ -356,7 +365,8 @@ jobs:
           mkdir -p regional-catalog
           python scripts/run_worker.py --once --require-supabase \
             --recompute-stale "${{ github.event.inputs.recompute_stale || '0' }}" \
-            --force-events "${{ github.event.inputs.force_events || '' }}"
+            --force-events "${{ github.event.inputs.force_events || '' }}" \
+            --registry-catchup "${{ github.event.inputs.registry_catchup || '3' }}"
 
       # `if: always()` -- save whatever state this run produced even if the
       # sweep step above failed partway (run_worker.py's own `run_once` now
