@@ -1,3 +1,10 @@
 
 # macOS Finder metadata (OneDrive-synced folders create these constantly).
 .DS_Store
+
+# Local secrets. The scheduled worker runs with the Supabase service-role
+# key from Actions secrets; a .env made while debugging must never land in
+# this public repository through a routine `git add -A`.
+.env
+.env.*
+!.env.example
