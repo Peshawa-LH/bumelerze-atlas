@@ -1,0 +1,148 @@
+# Developer channel: register, correct or retract an earthquake by hand.
+#
+# For an emergency the feeds missed, or a correction of a known event. A
+# manual record outranks every provider and holds against later ingestion
+# (migration 0033 in the app repository). The public app cannot reach this
+# channel: it needs the service-role key, which lives only in this
+# repository's secrets.
+#
+# Run it from the Actions tab ("Manual event" -> Run workflow) or:
+#   gh workflow run manual-event.yml -R Peshawa-LH/bumelerze-atlas \
+#     -f action=register -f origin_time_utc=2026-10-01T03:12:40Z \
+#     -f lat=36.19 -f lon=44.01 -f magnitude=4.6 -f author=peshawa \
+#     -f note="Felt widely, missed by all feeds"
+#
+# A new event gets a SHAKEmap from the next scheduled worker run. A
+# corrected event that already has one needs a recompute: run the shake
+# worker with populate_only=<bumelerze id>.
+
+name: Manual event
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: register = new event (or override of a matching one), correct = attach to a known event, retract = withdraw a manual record
+        type: choice
+        options: [register, correct, retract]
+        default: register
+      origin_time_utc:
+        description: Origin time, ISO 8601 with zone (e.g. 2026-10-01T03:12:40Z)
+        required: false
+      lat:
+        description: Latitude (decimal degrees)
+        required: false
+      lon:
+        description: Longitude (decimal degrees)
+        required: false
+      depth_km:
+        description: Depth in km (optional)
+        required: false
+      magnitude:
+        description: Magnitude
+        required: false
+      mag_type:
+        description: Magnitude type (Mw, ML, mb ...; optional)
+        required: false
+      place:
+        description: Place name (optional)
+        required: false
+      event_uuid:
+        description: For correct - the registry event uuid to correct
+        required: false
+      source_record_id:
+        description: For retract - the manual record's source_record_id
+        required: false
+      author:
+        description: Who is doing this (kept on the record)
+        required: true
+      note:
+        description: Why (kept on the record)
+        required: true
+      dry_run:
+        description: Print the request without sending it
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-event
+  cancel-in-progress: false
+
+jobs:
+  manual-event:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify required secrets are configured
+        env:
+          HAS_URL: ${{ secrets.SUPABASE_URL != '' }}
+          HAS_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
+          HAS_DEPLOY: ${{ secrets.ENGINE_DEPLOY_KEY != '' }}
+        run: |
+          if [ "$HAS_URL" != "true" ] || [ "$HAS_KEY" != "true" ] || [ "$HAS_DEPLOY" != "true" ]; then
+            echo "::error::SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY and ENGINE_DEPLOY_KEY must be set on this repository."
+            exit 1
+          fi
+
+      - name: Checkout bumelerze-engine (private, read-only)
+        uses: actions/checkout@v4
+        with:
+          repository: Peshawa-LH/bumelerze-engine
+          path: bumelerze-engine
+          ssh-key: ${{ secrets.ENGINE_DEPLOY_KEY }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install the one dependency the script needs
+        run: python -m pip install --quiet requests
+
+      # Every input reaches the shell as an environment variable and is
+      # passed as a separate argument, never pasted into the script text.
+      - name: Run
+        working-directory: bumelerze-engine
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          IN_ACTION: ${{ inputs.action }}
+          IN_TIME: ${{ inputs.origin_time_utc }}
+          IN_LAT: ${{ inputs.lat }}
+          IN_LON: ${{ inputs.lon }}
+          IN_DEPTH: ${{ inputs.depth_km }}
+          IN_MAG: ${{ inputs.magnitude }}
+          IN_MAG_TYPE: ${{ inputs.mag_type }}
+          IN_PLACE: ${{ inputs.place }}
+          IN_EVENT: ${{ inputs.event_uuid }}
+          IN_RECORD: ${{ inputs.source_record_id }}
+          IN_AUTHOR: ${{ inputs.author }}
+          IN_NOTE: ${{ inputs.note }}
+          IN_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          args=(--author "$IN_AUTHOR" --note "$IN_NOTE")
+          if [ "$IN_ACTION" = "retract" ]; then
+            [ -n "$IN_RECORD" ] || { echo "::error::retract needs source_record_id"; exit 1; }
+            args+=(--retract "$IN_RECORD")
+          else
+            args+=(--time "$IN_TIME" --lat "$IN_LAT" --lon "$IN_LON" --mag "$IN_MAG")
+            [ -n "$IN_DEPTH" ] && args+=(--depth "$IN_DEPTH")
+            [ -n "$IN_MAG_TYPE" ] && args+=(--mag-type "$IN_MAG_TYPE")
+            [ -n "$IN_PLACE" ] && args+=(--place "$IN_PLACE")
+            if [ "$IN_ACTION" = "correct" ]; then
+              [ -n "$IN_EVENT" ] || { echo "::error::correct needs event_uuid"; exit 1; }
+              args+=(--attach-to "$IN_EVENT")
+            fi
+          fi
+          [ "$IN_DRY_RUN" = "true" ] && args+=(--dry-run)
+          python scripts/register_manual_event.py "${args[@]}" | tee result.json
+          {
+            echo "### Manual event: $IN_ACTION"
+            echo '```json'
+            cat result.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
