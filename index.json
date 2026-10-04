@@ -753,7 +753,7 @@
     {
       "event_key": "bml202602dw",
       "index_path": "events/bml202602dw/index.json",
-      "latest_version": 26
+      "latest_version": 27
     },
     {
       "event_key": "bml202602ea",
@@ -834,7 +834,17 @@
       "event_key": "bml202602hs",
       "index_path": "events/bml202602hs/index.json",
       "latest_version": 1
+    },
+    {
+      "event_key": "bml202602ht",
+      "index_path": "events/bml202602ht/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml202602hv",
+      "index_path": "events/bml202602hv/index.json",
+      "latest_version": 1
     }
   ],
-  "generated_at": "2026-10-04T00:01:59.083651+00:00"
+  "generated_at": "2026-10-04T05:41:44.657333+00:00"
 }
