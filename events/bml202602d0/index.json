@@ -13,48 +13,6 @@
         "service_version": "26.1.1"
       },
       "products": {
-        "contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v1/bands_mi.json",
-        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v1/cont_mi.json",
-        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v1/info.json",
-        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v1/grid.json"
-      },
-      "published_at": "2026-09-27T20:09:37.327283+00:00",
-      "review_status": "automatic",
-      "version": 1
-    },
-    {
-      "engine_version": {
-        "config_hash": "09a6a04fa72f",
-        "ems_model": "Zaniniandhofer19",
-        "engine": "forward",
-        "engine_chain": "gmpe_forward",
-        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
-        "mmi_model": "WordenEtAl12",
-        "openquake_pin": "openquake.engine==3.26.2",
-        "service_version": "26.1.1"
-      },
-      "products": {
-        "contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v2/bands_mi.json",
-        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v2/cont_mi.json",
-        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v2/info.json",
-        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v2/grid.json"
-      },
-      "published_at": "2026-09-27T23:01:17.059399+00:00",
-      "review_status": "automatic",
-      "version": 2
-    },
-    {
-      "engine_version": {
-        "config_hash": "09a6a04fa72f",
-        "ems_model": "Zaniniandhofer19",
-        "engine": "forward",
-        "engine_chain": "gmpe_forward",
-        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
-        "mmi_model": "WordenEtAl12",
-        "openquake_pin": "openquake.engine==3.26.2",
-        "service_version": "26.1.1"
-      },
-      "products": {
         "contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v3/bands_mi.json",
         "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v3/cont_mi.json",
         "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602d0/v3/info.json",
