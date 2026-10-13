@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"value": 2.0, "units": "ems", "min_area_cells": 2.0}, "geometry": {"type": "MultiPolygon", "coordinates": [[[[41.45638, 37.25869], [43.74122, 37.25869], [43.74122, 39.05531], [41.45638, 39.05531], [41.45638, 37.25869]]]]}}], "epicenter": {"lat": 38.157, "lon": 42.5988}}
