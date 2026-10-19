@@ -114,6 +114,12 @@ jobs:
       # Promoted from secrets so step-level `if:` can test it;
       # the secrets context is not available in step conditions.
       VS30_RASTER_URL: ${{ secrets.VS30_RASTER_URL }}
+      # The two inputs that choose which steps run, normalised once. A
+      # scheduled run has no inputs and gets the normal-sweep values. An
+      # empty populate_limit counts as 0: it used to skip both the
+      # populate and the sweep step, so the run did nothing.
+      V2_CUT: ${{ github.event_name == 'workflow_dispatch' && inputs.v2_cut || '' }}
+      POPULATE_LIMIT: ${{ github.event_name == 'workflow_dispatch' && inputs.populate_limit || '0' }}
     # A dispatched batch recompute needs longer than the 20-minute sweep.
     timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 90 || 20 }}
     steps:
@@ -125,11 +131,15 @@ jobs:
       # check inside run_worker.py, applied here at the workflow level too
       # since a missing secret should never even reach the Python process).
       - name: Verify required secrets are configured
+        env:
+          HAS_URL: ${{ secrets.SUPABASE_URL != '' }}
+          HAS_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
+          HAS_DEPLOY: ${{ secrets.ENGINE_DEPLOY_KEY != '' }}
         run: |
           missing=()
-          [ -z "${{ secrets.SUPABASE_URL }}" ] && missing+=("SUPABASE_URL")
-          [ -z "${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" ] && missing+=("SUPABASE_SERVICE_ROLE_KEY")
-          [ -z "${{ secrets.ENGINE_DEPLOY_KEY }}" ] && missing+=("ENGINE_DEPLOY_KEY")
+          [ "$HAS_URL" = "true" ] || missing+=("SUPABASE_URL")
+          [ "$HAS_KEY" = "true" ] || missing+=("SUPABASE_SERVICE_ROLE_KEY")
+          [ "$HAS_DEPLOY" = "true" ] || missing+=("ENGINE_DEPLOY_KEY")
           if [ ${#missing[@]} -ne 0 ]; then
             echo "::error::Missing required secret(s) on this (bumelerze-atlas) repository: ${missing[*]}. Refusing to run in a silent local-only mode -- create them under Settings -> Secrets and variables -> Actions. See OPERATIONS.md ('Scheduled lane') in Peshawa-LH/bumelerze-engine for what each one is."
             exit 1
@@ -347,25 +357,34 @@ jobs:
       # still the right tool for Peshawa's own local/manual runs (a
       # separate clone, a separate token) -- see OPERATIONS.md for both
       # paths side by side.
+      # Dispatch inputs reach these three steps only through env, never
+      # pasted into the script text (the same rule as manual-event.yml).
+      # GitHub compares strings case-insensitively, so `v2_cut=prune`
+      # passes the condition below; the mode is upper-cased before the
+      # `case`, and an unknown mode stops the run instead of falling
+      # through to the full purge, which it used to do.
       - name: Engine cut (only when v2_cut is PURGE, RESTORE, PRUNE or SEEDS)
-        if: ${{ github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE' || github.event.inputs.v2_cut == 'SEEDS') }}
+        if: ${{ contains(fromJSON('["PURGE","RESTORE","PRUNE","SEEDS"]'), env.V2_CUT) }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
           BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+          IN_CUT_ONLY: ${{ inputs.cut_only }}
         shell: bash -el {0}
         run: |
           mkdir -p regional-catalog
-          case "${{ github.event.inputs.v2_cut }}" in
-            RESTORE) extra="--no-purge --skip-seeds --tracked-all" ;;
-            PRUNE)   extra="--no-purge --prune-off-policy" ;;
-            SEEDS)   extra="--no-purge --only ${{ github.event.inputs.cut_only }}" ;;
-            *)       extra="" ;;
+          mode="$(printf '%s' "$V2_CUT" | tr '[:lower:]' '[:upper:]')"
+          case "$mode" in
+            PURGE)   extra=() ;;
+            RESTORE) extra=(--no-purge --skip-seeds --tracked-all) ;;
+            PRUNE)   extra=(--no-purge --prune-off-policy) ;;
+            SEEDS)   extra=(--no-purge --only "$IN_CUT_ONLY") ;;
+            *)       echo "::error::unknown engine cut mode"; exit 1 ;;
           esac
-          python scripts/purge_and_republish.py --atlas-root "${{ github.workspace }}" \
-            --state-path worker_state.json --require-supabase --yes $extra
+          python scripts/purge_and_republish.py --atlas-root "$GITHUB_WORKSPACE" \
+            --state-path worker_state.json --require-supabase --yes "${extra[@]}"
 
       # One batch of the Atlas population. Publishes under ids allocated by
       # the database (pipeline.py's single allocator), NOT under the
@@ -373,36 +392,40 @@ jobs:
       # and the two spaces diverge, so the run also writes id-crosswalk.json
       # so a catalogue id still resolves to the published one.
       - name: Populate the Atlas (only when populate_limit is set)
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.populate_limit != '0' && github.event.inputs.populate_limit != '' }}
+        if: ${{ github.event_name == 'workflow_dispatch' && env.POPULATE_LIMIT != '0' }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
           BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+          IN_POPULATE_ONLY: ${{ inputs.populate_only }}
         shell: bash -el {0}
         run: |
           python scripts/populate_atlas.py \
-            --atlas "${{ github.workspace }}" \
+            --atlas "$GITHUB_WORKSPACE" \
             --state-path worker_state.json \
-            --limit "${{ github.event.inputs.populate_limit }}" \
-            --only "${{ github.event.inputs.populate_only }}"
+            --limit "$POPULATE_LIMIT" \
+            --only "$IN_POPULATE_ONLY"
 
       - name: Run one worker sweep, publishing straight into this checkout
-        if: ${{ !(github.event_name == 'workflow_dispatch' && (github.event.inputs.v2_cut == 'PURGE' || github.event.inputs.v2_cut == 'RESTORE' || github.event.inputs.v2_cut == 'PRUNE' || github.event.inputs.v2_cut == 'SEEDS' || github.event.inputs.populate_limit != '0')) }}
+        if: ${{ !contains(fromJSON('["PURGE","RESTORE","PRUNE","SEEDS"]'), env.V2_CUT) && env.POPULATE_LIMIT == '0' }}
         working-directory: bumelerze-engine
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
           BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+          IN_RECOMPUTE_STALE: ${{ inputs.recompute_stale || '0' }}
+          IN_FORCE_EVENTS: ${{ inputs.force_events }}
+          IN_REGISTRY_CATCHUP: ${{ inputs.registry_catchup || '3' }}
         shell: bash -el {0}
         run: |
           mkdir -p regional-catalog
           python scripts/run_worker.py --once --require-supabase \
-            --recompute-stale "${{ github.event.inputs.recompute_stale || '0' }}" \
-            --force-events "${{ github.event.inputs.force_events || '' }}" \
-            --registry-catchup "${{ github.event.inputs.registry_catchup || '3' }}"
+            --recompute-stale "$IN_RECOMPUTE_STALE" \
+            --force-events "$IN_FORCE_EVENTS" \
+            --registry-catchup "$IN_REGISTRY_CATCHUP"
 
       # `if: always()` -- save whatever state this run produced even if the
       # sweep step above failed partway (run_worker.py's own `run_once` now
