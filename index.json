@@ -3,7 +3,7 @@
     {
       "event_key": "bml19440001",
       "index_path": "events/bml19440001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml19460001",
@@ -1086,5 +1086,5 @@
       "latest_version": 1
     }
   ],
-  "generated_at": "2026-10-19T11:14:20.548498+00:00"
+  "generated_at": "2026-10-19T11:22:04.080019+00:00"
 }
