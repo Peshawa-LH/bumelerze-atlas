@@ -153,17 +153,17 @@
     {
       "event_key": "bml20180001",
       "index_path": "events/bml20180001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20180002",
       "index_path": "events/bml20180002/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20200001",
       "index_path": "events/bml20200001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20230001",
@@ -238,47 +238,47 @@
     {
       "event_key": "bml202600rw",
       "index_path": "events/bml202600rw/index.json",
-      "latest_version": 2
+      "latest_version": 3
     },
     {
       "event_key": "bml202600rx",
       "index_path": "events/bml202600rx/index.json",
-      "latest_version": 2
+      "latest_version": 3
     },
     {
       "event_key": "bml202600ry",
       "index_path": "events/bml202600ry/index.json",
-      "latest_version": 2
+      "latest_version": 3
     },
     {
       "event_key": "bml202600rz",
       "index_path": "events/bml202600rz/index.json",
-      "latest_version": 3
+      "latest_version": 4
     },
     {
       "event_key": "bml202600s0",
       "index_path": "events/bml202600s0/index.json",
-      "latest_version": 2
+      "latest_version": 3
     },
     {
       "event_key": "bml202600s5",
       "index_path": "events/bml202600s5/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml202600sh",
       "index_path": "events/bml202600sh/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml2026025x",
       "index_path": "events/bml2026025x/index.json",
-      "latest_version": 2
+      "latest_version": 3
     },
     {
       "event_key": "bml20260260",
       "index_path": "events/bml20260260/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20260262",
@@ -1086,5 +1086,5 @@
       "latest_version": 1
     }
   ],
-  "generated_at": "2026-10-19T13:26:23.777228+00:00"
+  "generated_at": "2026-10-19T13:50:53.092044+00:00"
 }
