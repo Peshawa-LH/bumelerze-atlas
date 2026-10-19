@@ -283,12 +283,12 @@
     {
       "event_key": "bml20260262",
       "index_path": "events/bml20260262/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml2026026e",
       "index_path": "events/bml2026026e/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20260279",
@@ -323,12 +323,12 @@
     {
       "event_key": "bml2026029y",
       "index_path": "events/bml2026029y/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml2026029z",
       "index_path": "events/bml2026029z/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml202602a0",
@@ -338,17 +338,17 @@
     {
       "event_key": "bml202602a2",
       "index_path": "events/bml202602a2/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml202602a3",
       "index_path": "events/bml202602a3/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml202602a4",
       "index_path": "events/bml202602a4/index.json",
-      "latest_version": 2
+      "latest_version": 3
     },
     {
       "event_key": "bml202602a5",
@@ -363,7 +363,7 @@
     {
       "event_key": "bml202602a8",
       "index_path": "events/bml202602a8/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml202602a9",
@@ -613,7 +613,7 @@
     {
       "event_key": "bml202602bm",
       "index_path": "events/bml202602bm/index.json",
-      "latest_version": 2
+      "latest_version": 3
     },
     {
       "event_key": "bml202602bn",
@@ -638,7 +638,7 @@
     {
       "event_key": "bml202602br",
       "index_path": "events/bml202602br/index.json",
-      "latest_version": 2
+      "latest_version": 3
     },
     {
       "event_key": "bml202602bs",
@@ -708,7 +708,7 @@
     {
       "event_key": "bml202602ck",
       "index_path": "events/bml202602ck/index.json",
-      "latest_version": 22
+      "latest_version": 23
     },
     {
       "event_key": "bml202602cl",
@@ -1086,5 +1086,5 @@
       "latest_version": 1
     }
   ],
-  "generated_at": "2026-10-19T13:50:56.458723+00:00"
+  "generated_at": "2026-10-19T14:20:31.251015+00:00"
 }
