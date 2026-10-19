@@ -162,7 +162,7 @@ jobs:
       # leaves an authenticated `origin` remote in place so the commit/push
       # step at the end needs no extra secret.
       - name: Checkout this repository (bumelerze-atlas)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: true
 
@@ -198,7 +198,7 @@ jobs:
       # reuse it, and the key is read-only anyway, so this workflow cannot
       # write to the engine repository even by accident.
       - name: Checkout bumelerze-engine (private, read-only)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: Peshawa-LH/bumelerze-engine
           ref: ${{ steps.engine.outputs.ref }}
@@ -219,7 +219,7 @@ jobs:
           echo "engine $REF at $commit"
           echo "Engine: \`$REF\` at \`$commit\`" >> "$GITHUB_STEP_SUMMARY"
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
           cache: "pip"
@@ -238,7 +238,7 @@ jobs:
       # than bypassing the resolver, so the installed environment matches
       # what the engine expects.
       - name: Set up the conda-forge toolchain with GDAL
-        uses: mamba-org/setup-micromamba@v2
+        uses: mamba-org/setup-micromamba@v3
         with:
           environment-name: shake
           create-args: >-
@@ -291,7 +291,7 @@ jobs:
       # state files tracking the same live feeds is exactly the "second
       # counter space" collision event_id.py's own docstring warns about.
       - name: Restore worker state (bml-id counters, product versions, idempotency hashes)
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: |
             bumelerze-engine/worker_state.json
@@ -331,7 +331,7 @@ jobs:
       - name: Restore cached Vs30 raster (only if VS30_RASTER_URL is configured)
         if: ${{ env.VS30_RASTER_URL != '' }}
         id: vs30-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: vs30-cache/global_vs30.grd
           key: vs30-raster-v1
@@ -445,7 +445,7 @@ jobs:
       # lost just because a later leg failed).
       - name: Save worker state for the next scheduled run
         if: always()
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: |
             bumelerze-engine/worker_state.json

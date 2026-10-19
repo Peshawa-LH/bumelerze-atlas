@@ -93,7 +93,7 @@ jobs:
 
       # Only the engine pin is needed from this repository.
       - name: Read the engine pin (.github/engine-ref)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           sparse-checkout: .github/engine-ref
           sparse-checkout-cone-mode: false
@@ -110,7 +110,7 @@ jobs:
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
 
       - name: Checkout bumelerze-engine (private, read-only)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: Peshawa-LH/bumelerze-engine
           ref: ${{ steps.engine.outputs.ref }}
@@ -127,7 +127,7 @@ jobs:
           echo "engine $REF at $commit"
           echo "Engine: \`$REF\` at \`$commit\`" >> "$GITHUB_STEP_SUMMARY"
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
 
