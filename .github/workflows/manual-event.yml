@@ -12,9 +12,13 @@
 #     -f lat=36.19 -f lon=44.01 -f magnitude=4.6 -f author=peshawa \
 #     -f note="Felt widely, missed by all feeds"
 #
-# A new event gets a SHAKEmap from the next scheduled worker run. A
-# corrected event that already has one needs a recompute: run the shake
-# worker with populate_only=<bumelerze id>.
+# A new event at M3 or above inside the trigger criteria gets a shakemap
+# from a later scheduled worker run (the registry catch-up leg); smaller
+# ones are not picked up. A corrected event that already has one is
+# recomputed by the worker's registry revision leg when its parameters
+# moved past the revision thresholds and its origin time is within the
+# last 14 days; anything else needs a dispatched recompute of the shake
+# worker.
 
 name: Manual event
 

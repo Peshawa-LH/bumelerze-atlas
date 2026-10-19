@@ -17,9 +17,11 @@ name: Shake-service scheduled worker
 
 on:
   schedule:
-    # Every 5 minutes: GitHub's minimum for a cron, and the best a free
-    # hosted lane can do (Peshawa, 2026-09-02: no always-on host for now).
-    # Runs are queued, never overlapped (concurrency group below).
+    # Configured every 5 minutes, GitHub's minimum for a cron (Peshawa,
+    # 2026-09-02: no always-on host for now). GitHub delivers far fewer
+    # scheduled runs than that: about 5-6 a day in October 2026, often
+    # hours apart. Runs are queued, never overlapped (concurrency group
+    # below).
     - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
@@ -33,26 +35,31 @@ on:
         default: "0"
       force_events:
         description: >-
-          Comma-separated tracked event ids to recompute and republish
-          regardless of their hash (e.g. after a lost push).
+          Comma-separated tracked event ids (the provider id the worker
+          tracks, e.g. an EMSC unid, or the worker's Bumelerze id) to
+          recompute and republish regardless of their hash (e.g. after a
+          lost push).
         required: false
         default: ""
       cut_only:
         description: >-
-          Comma-separated event ids the cut should limit itself to (used
-          with SEEDS to republish a few curated events). Empty means all.
+          Comma-separated ids the cut limits itself to, for SEEDS: curated
+          seed ids or tracked provider ids. Empty means every curated seed
+          and every tracked event that has a map.
         required: false
         default: ""
       populate_only:
         description: >-
           Comma-separated CATALOGUE Bumelerze ids to recompute even though
-          they are already published — for correcting a published event
-          whose parameters have changed. Needs populate_limit set too.
+          they are already published, for correcting a published event
+          whose parameters have changed. Takes effect only with
+          populate_limit of 1 or more, and only for events inside the
+          population selection.
         required: false
         default: ""
       registry_catchup:
         description: >-
-          Registry catch-up: compute up to this many SHAKEmaps for published
+          Registry catch-up: compute up to this many shakemaps for published
           registry events inside the trigger criteria that have none (the
           feeds can miss an event entirely between two scheduled runs).
           Every scheduled sweep already does 3; set higher to drain a
@@ -65,17 +72,21 @@ on:
           of the population selection (last 183 days at M>=3 plus M>=6
           since 1964) that have no products yet, then stop. 0 = normal
           sweep. Repeat until the log says 0 remain. ~40 fits the 90-minute
-          dispatch cap. See scripts/populate_atlas.py in the engine repo.
+          dispatch cap. Empty counts as 0. See scripts/populate_atlas.py
+          in the engine repo.
         required: false
         default: "0"
       v2_cut:
         description: >-
-          Engine cut (one-time, deliberate). PURGE deletes every published
-          event and index row and republishes everything with the current
-          engine under Bumelerze-id folders. RESTORE republishes the tracked
-          events without purging anything, to recover from a cut that died
-          partway (scripts/purge_and_republish.py). Anything else runs a
-          normal sweep.
+          Engine cut (deliberate; scripts/purge_and_republish.py). PURGE
+          deletes every published event and index row and republishes
+          everything with the current engine under Bumelerze-id folders.
+          RESTORE republishes the tracked events without purging anything,
+          to recover from a cut that died partway. PRUNE unpublishes every
+          mapped event the trigger policy no longer maps (its folder, index
+          rows and version counter); it does not remove superseded
+          versions. SEEDS republishes the ids in cut_only. Anything else
+          runs a normal sweep.
         required: false
         default: ""
       engine_ref:
