@@ -21,6 +21,29 @@
       "published_at": "2026-09-22T10:46:17.888979+00:00",
       "review_status": "automatic",
       "version": 1
+    },
+    {
+      "engine_version": {
+        "config_hash": "09a6a04fa72f",
+        "ems_model": "Zaniniandhofer19",
+        "engine": "forward",
+        "engine_chain": "gmpe_forward",
+        "engine_commit": "11fefa9591c8b0fbf0564f252c98181749533d50",
+        "engine_ref": "v26.2.1",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "26.2.1"
+      },
+      "products": {
+        "contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029n/v2/bands_mi.json",
+        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029n/v2/cont_mi.json",
+        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029n/v2/info.json",
+        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029n/v2/grid.json"
+      },
+      "published_at": "2026-10-19T19:38:59.015681+00:00",
+      "review_status": "automatic",
+      "version": 2
     }
   ]
 }

@@ -303,17 +303,17 @@
     {
       "event_key": "bml2026029j",
       "index_path": "events/bml2026029j/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml2026029n",
       "index_path": "events/bml2026029n/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml2026029r",
       "index_path": "events/bml2026029r/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml2026029x",
@@ -1086,5 +1086,5 @@
       "latest_version": 1
     }
   ],
-  "generated_at": "2026-10-19T19:26:27.448403+00:00"
+  "generated_at": "2026-10-19T19:39:01.607101+00:00"
 }
