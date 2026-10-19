@@ -87,13 +87,41 @@ jobs:
             exit 1
           fi
 
+      # Only the engine pin is needed from this repository.
+      - name: Read the engine pin (.github/engine-ref)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/engine-ref
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - name: Resolve the engine ref
+        id: engine
+        run: |
+          ref="$(grep -v '^[[:space:]]*#' .github/engine-ref | tr -d '[:space:]')"
+          if [[ ! "$ref" =~ ^[A-Za-z0-9][A-Za-z0-9._/-]*$ ]]; then
+            echo "::error::.github/engine-ref holds no usable engine ref"
+            exit 1
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+
       - name: Checkout bumelerze-engine (private, read-only)
         uses: actions/checkout@v4
         with:
           repository: Peshawa-LH/bumelerze-engine
+          ref: ${{ steps.engine.outputs.ref }}
           path: bumelerze-engine
           ssh-key: ${{ secrets.ENGINE_DEPLOY_KEY }}
           persist-credentials: false
+
+      - name: Record the engine ref and commit
+        working-directory: bumelerze-engine
+        env:
+          REF: ${{ steps.engine.outputs.ref }}
+        run: |
+          commit="$(git rev-parse HEAD)"
+          echo "engine $REF at $commit"
+          echo "Engine: \`$REF\` at \`$commit\`" >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/setup-python@v5
         with:

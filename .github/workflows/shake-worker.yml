@@ -78,6 +78,12 @@ on:
           normal sweep.
         required: false
         default: ""
+      engine_ref:
+        description: >-
+          Engine tag, branch or commit for this run only. Empty = the
+          release pinned in .github/engine-ref.
+        required: false
+        default: ""
 
 # Never run two sweeps at once against the same worker_state.json cache --
 # a genuine correctness requirement, not just tidiness: two concurrent
@@ -139,6 +145,28 @@ jobs:
         with:
           persist-credentials: true
 
+      # --- Which engine runs. The pin lives in ONE file, .github/engine-ref
+      # (shared with manual-event.yml), so moving it is a one-line commit
+      # and this repository's history records which engine release
+      # published what. Unpinned, every engine push would go live in the
+      # public Atlas within hours. `engine_ref` overrides the pin for one
+      # dispatched run (e.g. a release candidate); it is validated, and
+      # reaches the shell only through env.
+      - name: Resolve the engine ref
+        id: engine
+        env:
+          IN_ENGINE_REF: ${{ inputs.engine_ref }}
+        run: |
+          ref="$IN_ENGINE_REF"
+          if [ -z "$ref" ]; then
+            ref="$(grep -v '^[[:space:]]*#' .github/engine-ref | tr -d '[:space:]')"
+          fi
+          if [[ ! "$ref" =~ ^[A-Za-z0-9][A-Za-z0-9._/-]*$ ]]; then
+            echo "::error::the engine ref is empty or not a plain tag, branch or commit name"
+            exit 1
+          fi
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+
       # --- The engine repo, read-only. Since the 2026-08-24 repo split the
       # engine lives in Peshawa-LH/bumelerze-engine, which is PRIVATE, so
       # the built-in GITHUB_TOKEN cannot read it (that token is scoped to
@@ -152,9 +180,23 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Peshawa-LH/bumelerze-engine
+          ref: ${{ steps.engine.outputs.ref }}
           path: bumelerze-engine
           ssh-key: ${{ secrets.ENGINE_DEPLOY_KEY }}
           persist-credentials: false
+
+      # Recorded three ways: the run summary, the environment of every
+      # later step, and the message of the commit that publishes products.
+      - name: Record the engine ref and commit
+        working-directory: bumelerze-engine
+        env:
+          REF: ${{ steps.engine.outputs.ref }}
+        run: |
+          commit="$(git rev-parse HEAD)"
+          echo "ENGINE_REF=$REF" >> "$GITHUB_ENV"
+          echo "ENGINE_COMMIT=$commit" >> "$GITHUB_ENV"
+          echo "engine $REF at $commit"
+          echo "Engine: \`$REF\` at \`$commit\`" >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/setup-python@v5
         with:
@@ -398,7 +440,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "nothing new to publish this sweep"
           else
-            git commit -m "Publish products from scheduled sweep (run ${{ github.run_id }})"
+            git commit -m "Publish products from scheduled sweep (run ${{ github.run_id }})" \
+              -m "Engine: ${ENGINE_REF:-unknown} at ${ENGINE_COMMIT:-unknown}"
             # A human publish (seed_atlas.py) may have landed on main while
             # this sweep ran. Rebase onto it; the manifests are regenerated
             # from the union of event directories rather than merged.
