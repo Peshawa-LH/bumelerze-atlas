@@ -28,9 +28,11 @@ on:
       recompute_stale:
         description: >-
           After the poll, force a new version for up to this many tracked
-          events whose products were computed by an older engine (config
-          hash differs). 0 = normal sweep. Repeat until the log says
-          remaining=0. See OPERATIONS.md 8e in the engine repo.
+          events whose products are stale: the hazard config hash differs,
+          or the version has risk products and their risk data fingerprint
+          is missing or differs. Events retired from the Atlas are skipped.
+          0 = normal sweep. Repeat until the log says remaining=0. See
+          OPERATIONS.md 8e in the engine repo.
         required: false
         default: "0"
       force_events:
@@ -41,6 +43,14 @@ on:
           lost push).
         required: false
         default: ""
+      force_place_from_registry:
+        description: >-
+          With force_events: publish each forced event with the registry's
+          place name (events.place) instead of the one the worker state
+          kept. Only for a kept place known to be wrong.
+        type: boolean
+        required: false
+        default: false
       cut_only:
         description: >-
           Comma-separated ids the cut limits itself to, for SEEDS: curated
@@ -429,14 +439,19 @@ jobs:
           BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
           IN_RECOMPUTE_STALE: ${{ inputs.recompute_stale || '0' }}
           IN_FORCE_EVENTS: ${{ inputs.force_events }}
+          IN_FORCE_PLACE_FROM_REGISTRY: ${{ inputs.force_place_from_registry && 'true' || 'false' }}
           IN_REGISTRY_CATCHUP: ${{ inputs.registry_catchup || '3' }}
         shell: bash -el {0}
         run: |
           mkdir -p regional-catalog
+          extra=()
+          if [ "$IN_FORCE_PLACE_FROM_REGISTRY" = "true" ]; then
+            extra+=(--force-place-from-registry)
+          fi
           python scripts/run_worker.py --once --require-supabase \
             --recompute-stale "$IN_RECOMPUTE_STALE" \
             --force-events "$IN_FORCE_EVENTS" \
-            --registry-catchup "$IN_REGISTRY_CATCHUP"
+            --registry-catchup "$IN_REGISTRY_CATCHUP" "${extra[@]}"
 
       # `if: always()` -- save whatever state this run produced even if the
       # sweep step above failed partway (run_worker.py's own `run_once` now

@@ -1,3 +1,3 @@
 # The bumelerze-engine release the Atlas workflows run (a tag, normally).
 # shake-worker.yml and manual-event.yml both read it; move the pin here.
-v26.2.0
+v26.2.1
