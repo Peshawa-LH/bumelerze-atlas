@@ -3,7 +3,8 @@
 `global-m45.parquet` is every earthquake of magnitude 4.5 or greater that
 the USGS catalogue holds, from 1900 to 27 August 2026. It is the global
 backdrop for the Bumelerze map: uniform worldwide coverage at a threshold
-that actually holds everywhere.
+that actually holds everywhere. It is a snapshot, fetched on 27 August
+2026; the scheduled sweep does not update it.
 
 | | |
 | --- | --- |
@@ -76,7 +77,8 @@ file does not homogenize them.
 
 ## Regenerating
 
-From the Bumelerze engine repository:
+The file is built by `scripts/build_global_catalog.py` in the Bumelerze
+engine, whose source is not public:
 
 ```
 ./.venv/bin/python scripts/build_global_catalog.py
@@ -94,5 +96,6 @@ events), sequentially and with a delay between requests.
 Earthquake parameters are from the U.S. Geological Survey's National
 Earthquake Information Center, via the FDSN event web service. USGS
 catalogue data are in the public domain; the compilation, its threshold and
-its identifiers are Bumelerze's. See `DATA-SOURCES.md` in the main
-repository for the full terms of every source Bumelerze uses.
+its identifiers are Bumelerze's. The terms of every source Bumelerze
+uses are in
+[DATA-SOURCES.md](https://github.com/Peshawa-LH/bumelerze-v26/blob/main/DATA-SOURCES.md).
