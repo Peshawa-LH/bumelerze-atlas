@@ -83,12 +83,12 @@
     {
       "event_key": "bml19900001",
       "index_path": "events/bml19900001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml19910001",
       "index_path": "events/bml19910001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml19970001",
@@ -98,12 +98,12 @@
     {
       "event_key": "bml20020001",
       "index_path": "events/bml20020001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20030001",
       "index_path": "events/bml20030001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20030002",
@@ -113,42 +113,42 @@
     {
       "event_key": "bml20030003",
       "index_path": "events/bml20030003/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20060001",
       "index_path": "events/bml20060001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20100001",
       "index_path": "events/bml20100001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20110001",
       "index_path": "events/bml20110001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20120001",
       "index_path": "events/bml20120001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20120002",
       "index_path": "events/bml20120002/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20140001",
       "index_path": "events/bml20140001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20170001",
       "index_path": "events/bml20170001/index.json",
-      "latest_version": 1
+      "latest_version": 2
     },
     {
       "event_key": "bml20180001",
@@ -1086,5 +1086,5 @@
       "latest_version": 1
     }
   ],
-  "generated_at": "2026-10-19T12:28:41.023638+00:00"
+  "generated_at": "2026-10-19T13:26:19.893646+00:00"
 }
