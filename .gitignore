@@ -8,3 +8,10 @@
 .env
 .env.*
 !.env.example
+
+# Scratch paths of the worker workflow: the nested engine checkout, the
+# optional Vs30 raster cache and the assembled Pages tree. The commit step
+# already stages only events/, index.json and id-crosswalk.json.
+bumelerze-engine/
+vs30-cache/
+_site/
