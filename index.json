@@ -1269,7 +1269,27 @@
       "event_key": "bml202602ve",
       "index_path": "events/bml202602ve/index.json",
       "latest_version": 1
+    },
+    {
+      "event_key": "bml202602vf",
+      "index_path": "events/bml202602vf/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml202602vg",
+      "index_path": "events/bml202602vg/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml202602vh",
+      "index_path": "events/bml202602vh/index.json",
+      "latest_version": 1
+    },
+    {
+      "event_key": "bml202602vl",
+      "index_path": "events/bml202602vl/index.json",
+      "latest_version": 1
     }
   ],
-  "generated_at": "2026-10-29T17:35:42.799874+00:00"
+  "generated_at": "2026-10-29T21:59:43.435606+00:00"
 }
