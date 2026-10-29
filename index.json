@@ -1264,7 +1264,12 @@
       "event_key": "bml202602vc",
       "index_path": "events/bml202602vc/index.json",
       "latest_version": 1
+    },
+    {
+      "event_key": "bml202602ve",
+      "index_path": "events/bml202602ve/index.json",
+      "latest_version": 1
     }
   ],
-  "generated_at": "2026-10-29T11:44:51.971130+00:00"
+  "generated_at": "2026-10-29T17:35:26.392759+00:00"
 }
