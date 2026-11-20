@@ -77,6 +77,9 @@ concurrency:
 
 jobs:
   manual-event:
+    # A manual record outranks every feed, so each run waits for the owner's
+    # approval (environment `owner-approval`, required reviewer).
+    environment: owner-approval
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -93,7 +96,7 @@ jobs:
 
       # Only the engine pin is needed from this repository.
       - name: Read the engine pin (.github/engine-ref)
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           sparse-checkout: .github/engine-ref
           sparse-checkout-cone-mode: false
@@ -110,7 +113,7 @@ jobs:
           echo "ref=$ref" >> "$GITHUB_OUTPUT"
 
       - name: Checkout bumelerze-engine (private, read-only)
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Peshawa-LH/bumelerze-engine
           ref: ${{ steps.engine.outputs.ref }}
@@ -127,7 +130,7 @@ jobs:
           echo "engine $REF at $commit"
           echo "Engine: \`$REF\` at \`$commit\`" >> "$GITHUB_STEP_SUMMARY"
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.11"
 

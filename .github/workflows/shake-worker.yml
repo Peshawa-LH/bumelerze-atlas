@@ -106,16 +106,6 @@ on:
         required: false
         default: ""
 
-# Never run two sweeps at once against the same worker_state.json cache --
-# a genuine correctness requirement, not just tidiness: two concurrent
-# writers to the bml-id allocation counters (shake_service/event_id.py's
-# own "single allocation authority" invariant) could mint colliding ids.
-# `cancel-in-progress: false` queues a run that starts before the previous
-# one finishes, rather than racing it.
-concurrency:
-  group: shake-worker
-  cancel-in-progress: false
-
 # `contents: write` is scoped to the repo THIS workflow lives in (the Atlas
 # repo) -- it is what lets the final `git push` step below use the
 # automatic GITHUB_TOKEN instead of a configured secret. It grants nothing
@@ -129,7 +119,39 @@ permissions:
   actions: write
 
 jobs:
+  # Owner approval for the risky options: another engine version
+  # (engine_ref) or an engine cut (v2_cut: PURGE, PRUNE, RESTORE, SEEDS).
+  # Scheduled runs and plain dispatches -- including the automatic start
+  # after an earthquake (migration 0072 sends no inputs) -- skip this job
+  # and never wait. The environment `owner-approval` names the owner as
+  # required reviewer.
+  approval:
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.engine_ref != '' || inputs.v2_cut != '')
+    runs-on: ubuntu-latest
+    environment: owner-approval
+    permissions: {}
+    timeout-minutes: 5
+    steps:
+      - name: Approved
+        run: echo "A required reviewer approved this run's options."
+
   sweep:
+    needs: approval
+    # Runs when the approval job was skipped (normal runs) or approved;
+    # not when it was rejected or the run was cancelled.
+    if: ${{ !cancelled() && needs.approval.result != 'failure' }}
+    # Never run two sweeps at once against the same worker_state.json cache --
+    # a genuine correctness requirement, not just tidiness: two concurrent
+    # writers to the bml-id allocation counters (shake_service/event_id.py's
+    # own "single allocation authority" invariant) could mint colliding ids.
+    # `cancel-in-progress: false` queues a run that starts before the previous
+    # one finishes, rather than racing it. The group sits on this job, not the
+    # workflow, so a run waiting for approval never holds up the automatic ones.
+    concurrency:
+      group: shake-worker
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     env:
       # Promoted from secrets so step-level `if:` can test it;
@@ -172,7 +194,7 @@ jobs:
       # leaves an authenticated `origin` remote in place so the commit/push
       # step at the end needs no extra secret.
       - name: Checkout this repository (bumelerze-atlas)
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: true
 
@@ -208,7 +230,7 @@ jobs:
       # reuse it, and the key is read-only anyway, so this workflow cannot
       # write to the engine repository even by accident.
       - name: Checkout bumelerze-engine (private, read-only)
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: Peshawa-LH/bumelerze-engine
           ref: ${{ steps.engine.outputs.ref }}
@@ -229,7 +251,7 @@ jobs:
           echo "engine $REF at $commit"
           echo "Engine: \`$REF\` at \`$commit\`" >> "$GITHUB_STEP_SUMMARY"
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.11"
           cache: "pip"
@@ -248,7 +270,7 @@ jobs:
       # than bypassing the resolver, so the installed environment matches
       # what the engine expects.
       - name: Set up the conda-forge toolchain with GDAL
-        uses: mamba-org/setup-micromamba@v3
+        uses: mamba-org/setup-micromamba@f457c30a868e4760d3a6fcea5f25dc655b8edf39 # v3.2.1
         with:
           environment-name: shake
           create-args: >-
@@ -301,7 +323,7 @@ jobs:
       # state files tracking the same live feeds is exactly the "second
       # counter space" collision event_id.py's own docstring warns about.
       - name: Restore worker state (bml-id counters, product versions, idempotency hashes)
-        uses: actions/cache/restore@v6
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             bumelerze-engine/worker_state.json
@@ -341,7 +363,7 @@ jobs:
       - name: Restore cached Vs30 raster (only if VS30_RASTER_URL is configured)
         if: ${{ env.VS30_RASTER_URL != '' }}
         id: vs30-cache
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: vs30-cache/global_vs30.grd
           key: vs30-raster-v1
@@ -460,7 +482,7 @@ jobs:
       # lost just because a later leg failed).
       - name: Save worker state for the next scheduled run
         if: always()
-        uses: actions/cache/save@v6
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             bumelerze-engine/worker_state.json
