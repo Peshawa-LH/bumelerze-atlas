@@ -94,11 +94,14 @@ jobs:
             exit 1
           fi
 
-      # Only the engine pin is needed from this repository.
+      # Only the engine pin and the hash-locked packages are needed from this
+      # repository.
       - name: Read the engine pin (.github/engine-ref)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          sparse-checkout: .github/engine-ref
+          sparse-checkout: |
+            .github/engine-ref
+            .github/requirements-manual-event.txt
           sparse-checkout-cone-mode: false
           persist-credentials: false
 
@@ -134,8 +137,10 @@ jobs:
         with:
           python-version: "3.11"
 
+      # requests and its dependencies at fixed versions, each file checked
+      # against a recorded sha256 (security audit CI-11).
       - name: Install the one dependency the script needs
-        run: python -m pip install --quiet requests
+        run: python -m pip install --quiet --require-hashes -r .github/requirements-manual-event.txt
 
       # Every input reaches the shell as an environment variable and is
       # passed as a separate argument, never pasted into the script text.

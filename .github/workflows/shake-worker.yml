@@ -283,11 +283,21 @@ jobs:
         working-directory: bumelerze-engine
         shell: bash -el {0}
         run: |
-          python -m pip install --upgrade pip
-          # GDAL already comes from conda-forge above, so keep pip from
-          # trying to rebuild it from source against the wrong library.
-          grep -v '^GDAL==' requirements.txt > /tmp/requirements-ci.txt
-          time pip install -r /tmp/requirements-ci.txt
+          # pip as conda-forge installed it (checksummed by conda); no
+          # upgrade from PyPI at run time (security audit CI-11).
+          python -m pip --version
+          if [ -f requirements-lock.txt ]; then
+            # Engine 26.2.3 on: every package file must match a sha256 the
+            # engine release recorded (scripts/make_requirements_lock.py),
+            # GDAL left out because it comes from conda-forge above.
+            time pip install --require-hashes -r requirements-lock.txt
+          else
+            # Older engine refs (one-off runs with engine_ref): plain pins.
+            # GDAL already comes from conda-forge above, so keep pip from
+            # trying to rebuild it from source against the wrong library.
+            grep -v '^GDAL==' requirements.txt > /tmp/requirements-ci.txt
+            time pip install -r /tmp/requirements-ci.txt
+          fi
           python -c "from osgeo import gdal; print('gdal', gdal.__version__)"
 
       - name: Verify the openquake install (README.md's own gate check)
