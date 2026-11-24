@@ -423,7 +423,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
-          BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+          BUMELERZE_ATLAS_BASE_URL: https://atlas.bumelerze.com
           IN_CUT_ONLY: ${{ inputs.cut_only }}
         shell: bash -el {0}
         run: |
@@ -451,7 +451,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
-          BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+          BUMELERZE_ATLAS_BASE_URL: https://atlas.bumelerze.com
           IN_POPULATE_ONLY: ${{ inputs.populate_only }}
         shell: bash -el {0}
         run: |
@@ -468,7 +468,7 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           BUMELERZE_ATLAS_PUBLISH_ROOT: ${{ github.workspace }}
-          BUMELERZE_ATLAS_BASE_URL: https://peshawa-lh.github.io/bumelerze-atlas
+          BUMELERZE_ATLAS_BASE_URL: https://atlas.bumelerze.com
           IN_RECOMPUTE_STALE: ${{ inputs.recompute_stale || '0' }}
           IN_FORCE_EVENTS: ${{ inputs.force_events }}
           IN_FORCE_PLACE_FROM_REGISTRY: ${{ inputs.force_place_from_registry && 'true' || 'false' }}
