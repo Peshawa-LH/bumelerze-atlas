@@ -7,6 +7,11 @@ Produced by the Bumelerze engine (its source is not public) and consumed
 by the app at <https://app.bumelerze.com>. Updated by a scheduled sweep,
 typically every few hours; not a rapid-response channel.
 
+Served at <https://atlas.bumelerze.com> (Cloudflare Pages, from this
+repository; since 2026-11). Every file keeps its path, so an address under
+the former <https://peshawa-lh.github.io/bumelerze-atlas/> names the same
+file there.
+
 ## Layout
 
 ```
@@ -97,13 +102,13 @@ An event with a damage report:
 
 > Hasan P. L. (`<year>`) Bumelerze SHAKEmap and damage report, event
 > `<bml id>`, version `<n>`, generated `<date>`. Bumelerze Atlas,
-> `https://peshawa-lh.github.io/bumelerze-atlas/events/<bml id>/v<n>/`
+> `https://atlas.bumelerze.com/events/<bml id>/v<n>/`
 
 A hazard-only event:
 
 > Hasan P. L. (`<year>`) Bumelerze shakemap, event `<bml id>`, version
 > `<n>`, generated `<date>`. Bumelerze Atlas,
-> `https://peshawa-lh.github.io/bumelerze-atlas/events/<bml id>/v<n>/`
+> `https://atlas.bumelerze.com/events/<bml id>/v<n>/`
 
 The date is `generated_at` in that version's `info.json`. To cite the
 Atlas as a whole, name a snapshot tag (`atlas-YYYY-MM-DD`).

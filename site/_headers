@@ -1,0 +1,13 @@
+# Response headers for atlas.bumelerze.com (Cloudflare Pages reads this file
+# from the published root; scripts/assemble_site.sh copies it there).
+# - CORS open to every origin: the app, the website and anyone else fetch the
+#   products directly by URL (GitHub Pages sent the same header).
+# - No Cache-Control here on purpose: Pages' default (revalidate, 304 when
+#   unchanged) shows a revised product or a new index at once.
+# - HSTS for a year; the files are data (JSON, PDF, Parquet), never framed.
+/*
+  Access-Control-Allow-Origin: *
+  X-Content-Type-Options: nosniff
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
