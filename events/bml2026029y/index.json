@@ -15,17 +15,17 @@
         "service_version": "26.2.0"
       },
       "products": {
-        "contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/bands_mi.json",
-        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/cont_mi.json",
-        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/info.json",
-        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/grid.json",
-        "report": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/report.pdf",
-        "risk_areas": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/areas.json",
-        "risk_contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/bands_damage.json",
-        "risk_contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/cont_damage.json",
-        "risk_districts": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/districts.json",
-        "risk_grid": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/damage_grid.json",
-        "risk_summary": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml2026029y/v2/risk_summary.json"
+        "contour_bands": "https://atlas.bumelerze.com/events/bml2026029y/v2/bands_mi.json",
+        "contours": "https://atlas.bumelerze.com/events/bml2026029y/v2/cont_mi.json",
+        "metadata": "https://atlas.bumelerze.com/events/bml2026029y/v2/info.json",
+        "raster": "https://atlas.bumelerze.com/events/bml2026029y/v2/grid.json",
+        "report": "https://atlas.bumelerze.com/events/bml2026029y/v2/report.pdf",
+        "risk_areas": "https://atlas.bumelerze.com/events/bml2026029y/v2/areas.json",
+        "risk_contour_bands": "https://atlas.bumelerze.com/events/bml2026029y/v2/bands_damage.json",
+        "risk_contours": "https://atlas.bumelerze.com/events/bml2026029y/v2/cont_damage.json",
+        "risk_districts": "https://atlas.bumelerze.com/events/bml2026029y/v2/districts.json",
+        "risk_grid": "https://atlas.bumelerze.com/events/bml2026029y/v2/damage_grid.json",
+        "risk_summary": "https://atlas.bumelerze.com/events/bml2026029y/v2/risk_summary.json"
       },
       "published_at": "2026-10-19T14:03:32.619323+00:00",
       "review_status": "automatic",

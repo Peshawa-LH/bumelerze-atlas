@@ -15,10 +15,10 @@
         "service_version": "26.2.1"
       },
       "products": {
-        "contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602sm/v1/bands_mi.json",
-        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602sm/v1/cont_mi.json",
-        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602sm/v1/info.json",
-        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602sm/v1/grid.json"
+        "contour_bands": "https://atlas.bumelerze.com/events/bml202602sm/v1/bands_mi.json",
+        "contours": "https://atlas.bumelerze.com/events/bml202602sm/v1/cont_mi.json",
+        "metadata": "https://atlas.bumelerze.com/events/bml202602sm/v1/info.json",
+        "raster": "https://atlas.bumelerze.com/events/bml202602sm/v1/grid.json"
       },
       "published_at": "2026-10-25T01:36:17.287703+00:00",
       "review_status": "automatic",
@@ -38,10 +38,10 @@
         "service_version": "26.2.1"
       },
       "products": {
-        "contour_bands": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602sm/v2/bands_mi.json",
-        "contours": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602sm/v2/cont_mi.json",
-        "metadata": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602sm/v2/info.json",
-        "raster": "https://peshawa-lh.github.io/bumelerze-atlas/events/bml202602sm/v2/grid.json"
+        "contour_bands": "https://atlas.bumelerze.com/events/bml202602sm/v2/bands_mi.json",
+        "contours": "https://atlas.bumelerze.com/events/bml202602sm/v2/cont_mi.json",
+        "metadata": "https://atlas.bumelerze.com/events/bml202602sm/v2/info.json",
+        "raster": "https://atlas.bumelerze.com/events/bml202602sm/v2/grid.json"
       },
       "published_at": "2026-10-25T06:49:05.652799+00:00",
       "review_status": "automatic",
