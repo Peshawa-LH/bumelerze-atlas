@@ -1,0 +1,28 @@
+{
+  "event_key": "bml202603dq",
+  "versions": [
+    {
+      "engine_version": {
+        "config_hash": "09a6a04fa72f",
+        "ems_model": "Zaniniandhofer19",
+        "engine": "forward",
+        "engine_chain": "gmpe_forward",
+        "engine_commit": "b120290f9899a8beadcc2d1fc3bf68a38f16030a",
+        "engine_ref": "b120290f9899a8beadcc2d1fc3bf68a38f16030a",
+        "gsim_branches": "CY14,ASB14,BSSA14,KALE15",
+        "mmi_model": "WordenEtAl12",
+        "openquake_pin": "openquake.engine==3.26.2",
+        "service_version": "26.2.5"
+      },
+      "products": {
+        "contour_bands": "https://atlas.bumelerze.com/events/bml202603dq/v1/bands_mi.json",
+        "contours": "https://atlas.bumelerze.com/events/bml202603dq/v1/cont_mi.json",
+        "metadata": "https://atlas.bumelerze.com/events/bml202603dq/v1/info.json",
+        "raster": "https://atlas.bumelerze.com/events/bml202603dq/v1/grid.json"
+      },
+      "published_at": "2026-11-27T22:32:03.232601+00:00",
+      "review_status": "automatic",
+      "version": 1
+    }
+  ]
+}
