@@ -1,6 +1,6 @@
 # The bumelerze-engine release the Atlas workflows run. shake-worker.yml and
 # manual-event.yml both read it; move the pin here.
 # Pinned by COMMIT, not by tag (security audit CI-10): a tag can be moved in the
-# engine repository without any change here. This commit is tag v26.2.4.
+# engine repository without any change here. This commit is tag v26.2.5.
 # To move: tag the engine release, then put its full commit sha below.
-e64f561b609ce33a8f9f84e16088a9c69a2a0615
+b120290f9899a8beadcc2d1fc3bf68a38f16030a
